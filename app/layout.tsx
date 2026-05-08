@@ -3,6 +3,7 @@ import { Nunito, Bebas_Neue } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { CartProvider } from '@/context/cart-context'
 import { FloatingCart } from '@/components/floating-cart'
+import { PrototypeBanner } from '@/components/prototype-banner'
 import './globals.css'
 
 const nunito = Nunito({ 
@@ -55,6 +56,7 @@ export default function RootLayout({
   return (
     <html lang="es" className={`${nunito.variable} ${bebasNeue.variable} bg-background`}>
       <body className="font-sans antialiased">
+        <PrototypeBanner />
         <CartProvider>
           {children}
           <FloatingCart />

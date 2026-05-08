@@ -12,7 +12,7 @@ export default function CatalogoPage() {
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-background pt-20">
+      <main className="min-h-screen bg-background pt-20 sm:pt-32">
         <Suspense fallback={<CatalogSkeleton />}>
           <CatalogContent />
         </Suspense>

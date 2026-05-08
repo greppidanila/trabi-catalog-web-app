@@ -21,7 +21,7 @@ export default function TutorialesPage() {
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-background pt-20">
+      <main className="min-h-screen bg-background pt-20 sm:pt-32">
         <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
           {/* Header */}
           <div className="text-center">

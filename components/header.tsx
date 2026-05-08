@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
@@ -16,13 +16,25 @@ const navLinks = [
 export function Header() {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [hasScrolled, setHasScrolled] = useState(false);
   const isHomepage = pathname === "/";
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setHasScrolled(window.scrollY > 50);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const showBackground = hasScrolled || !isHomepage;
 
   return (
     <header
       className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-colors",
-        isHomepage ? "bg-transparent" : "bg-white shadow-sm"
+        "fixed left-0 right-0 z-50 transition-all duration-300",
+        "top-0 sm:top-[52px]", // Account for prototype banner
+        showBackground ? "bg-white/95 backdrop-blur-sm shadow-sm" : "bg-transparent"
       )}
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -46,10 +58,10 @@ export function Header() {
                 href={link.href}
                 className={cn(
                   "text-sm font-semibold transition-colors",
-                  isHomepage
-                    ? "text-white hover:text-white/80"
-                    : "text-foreground hover:text-primary",
-                  pathname === link.href && !isHomepage && "text-primary"
+                  showBackground
+                    ? "text-foreground hover:text-primary"
+                    : "text-white hover:text-white/80",
+                  pathname === link.href && showBackground && "text-primary"
                 )}
               >
                 {link.label}
@@ -71,9 +83,9 @@ export function Header() {
             aria-label={mobileMenuOpen ? "Cerrar menú" : "Abrir menú"}
           >
             {mobileMenuOpen ? (
-              <X className={cn("h-6 w-6", isHomepage ? "text-white" : "text-foreground")} />
+              <X className={cn("h-6 w-6", showBackground ? "text-foreground" : "text-white")} />
             ) : (
-              <Menu className={cn("h-6 w-6", isHomepage ? "text-white" : "text-foreground")} />
+              <Menu className={cn("h-6 w-6", showBackground ? "text-foreground" : "text-white")} />
             )}
           </button>
         </div>

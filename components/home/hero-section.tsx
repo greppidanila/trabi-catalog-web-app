@@ -14,11 +14,11 @@ export function HeroSection() {
         sizes="100vw"
       />
       
-      {/* Dark Red Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#8b0022]/90 via-[#f20036]/70 to-[#8b0022]/90" />
+      {/* Soft Red Overlay - more transparent to show image */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#8b0022]/60 via-[#f20036]/40 to-[#8b0022]/60" />
       
       {/* Content */}
-      <div className="relative z-10 mx-auto max-w-7xl px-4 py-32 text-center sm:px-6 lg:px-8">
+      <div className="relative z-10 mx-auto max-w-7xl px-4 pt-40 pb-32 text-center sm:px-6 lg:px-8">
         <h1 className="font-serif text-5xl tracking-wider text-white sm:text-6xl md:text-7xl lg:text-8xl text-balance">
           Marcá la diferencia
         </h1>
