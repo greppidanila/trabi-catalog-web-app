@@ -18,10 +18,10 @@ export type Product = {
 };
 
 export const categories: { name: Category; color: string; icon: string }[] = [
-  { name: "Oficina y Uso General", color: "bg-blue-500", icon: "briefcase" },
-  { name: "Escolar y Coloreo", color: "bg-green-500", icon: "pencil" },
-  { name: "Brush y Lettering", color: "bg-pink-500", icon: "pen-tool" },
-  { name: "Artística y Manualidades", color: "bg-amber-500", icon: "palette" },
+  { name: "Oficina y Uso General", color: "bg-[#111111]", icon: "briefcase" },
+  { name: "Escolar y Coloreo", color: "bg-[#f20036]", icon: "pencil" },
+  { name: "Brush y Lettering", color: "bg-[#cc002d]", icon: "pen-tool" },
+  { name: "Artística y Manualidades", color: "bg-[#8a001f]", icon: "palette" },
 ];
 
 export const subcategories: Record<Category, string[]> = {

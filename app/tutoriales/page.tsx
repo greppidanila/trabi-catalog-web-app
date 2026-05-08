@@ -11,10 +11,10 @@ export const metadata = {
 };
 
 const categoryColors: Record<string, string> = {
-  "Brush y Lettering": "bg-pink-500",
-  "Escolar y Coloreo": "bg-green-500",
-  "Artística y Manualidades": "bg-amber-500",
-  "Oficina y Uso General": "bg-blue-500",
+  "Brush y Lettering": "bg-[#cc002d]",
+  "Escolar y Coloreo": "bg-[#f20036]",
+  "Artística y Manualidades": "bg-[#8a001f]",
+  "Oficina y Uso General": "bg-[#111111]",
 };
 
 export default function TutorialesPage() {

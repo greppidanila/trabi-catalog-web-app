@@ -25,11 +25,11 @@
   --ring: #f20036;
   --radius: 0.5rem;
   
-  /* Category colors */
-  --category-oficina: #3b82f6;
-  --category-escolar: #22c55e;
-  --category-brush: #ec4899;
-  --category-artistica: #f59e0b;
+  /* Category colors - variations of brand red */
+  --category-oficina: #111111;
+  --category-escolar: #f20036;
+  --category-brush: #cc002d;
+  --category-artistica: #8a001f;
 }
 
 @theme inline {

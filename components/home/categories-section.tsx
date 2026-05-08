@@ -9,8 +9,8 @@ const categoryCards = [
     slug: "oficina-y-uso-general",
     description: "Marcadores, resaltadores, bolígrafos y más para tu espacio de trabajo.",
     icon: Briefcase,
-    color: "bg-blue-500",
-    hoverColor: "group-hover:bg-blue-600",
+    color: "bg-[#111111]",
+    hoverColor: "group-hover:bg-[#333333]",
     image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/imgi_5_banner-img-4-mWRMayvSaST44igkdtzBEGJkz5Ch4d.png",
   },
   {
@@ -18,8 +18,8 @@ const categoryCards = [
     slug: "escolar-y-coloreo",
     description: "Todo lo que necesitan los más pequeños para aprender y crear.",
     icon: Pencil,
-    color: "bg-green-500",
-    hoverColor: "group-hover:bg-green-600",
+    color: "bg-[#f20036]",
+    hoverColor: "group-hover:bg-[#d90030]",
     image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/imgi_7_Difumio-uDHO34ErmHQvZaedXc0z0fiUEM7DCX.jpg",
   },
   {
@@ -27,8 +27,8 @@ const categoryCards = [
     slug: "brush-y-lettering",
     description: "Marcadores punta pincel para lettering, caligrafía y arte.",
     icon: PenTool,
-    color: "bg-pink-500",
-    hoverColor: "group-hover:bg-pink-600",
+    color: "bg-[#cc002d]",
+    hoverColor: "group-hover:bg-[#a80025]",
     image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/imgi_3_banner-img-2-Uqgdtt1p8Wst3TApZM9iLhGgEceGsI.png",
   },
   {
@@ -36,8 +36,8 @@ const categoryCards = [
     slug: "artistica-y-manualidades",
     description: "Acrílicos, glitter y materiales para proyectos creativos.",
     icon: Palette,
-    color: "bg-amber-500",
-    hoverColor: "group-hover:bg-amber-600",
+    color: "bg-[#8a001f]",
+    hoverColor: "group-hover:bg-[#6b0018]",
     image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/imgi_8_Acrylic-7JLvDVbau3nxGDas3hq5LqEf8FTkTr.jpg",
   },
 ];
