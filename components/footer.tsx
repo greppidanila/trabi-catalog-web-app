@@ -27,7 +27,8 @@ export function Footer() {
               alt="Trabi"
               width={120}
               height={40}
-              className="h-10 w-auto brightness-0 invert"
+              className="h-10 w-auto md:h-12"
+              priority
             />
             <p className="text-sm text-white/70 leading-relaxed">
               Desde 1906, Trabi es sinónimo de calidad e innovación en artículos escolares y de oficina en Argentina.
