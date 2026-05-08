@@ -11,6 +11,7 @@ const navLinks = [
   { href: "/", label: "Inicio" },
   { href: "/catalogo", label: "Catálogo" },
   { href: "/tutoriales", label: "Tutoriales" },
+  { href: "/puntos-de-venta", label: "Puntos de Venta" },
 ];
 
 export function Header() {
