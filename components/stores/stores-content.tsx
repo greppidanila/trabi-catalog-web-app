@@ -33,8 +33,8 @@ const StoreMap = dynamic(
 
 export function StoresContent() {
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedProvincia, setSelectedProvincia] = useState("");
-  const [selectedZona, setSelectedZona] = useState("");
+  const [selectedProvincia, setSelectedProvincia] = useState("all");
+  const [selectedZona, setSelectedZona] = useState("all");
   const [viewMode, setViewMode] = useState<"map" | "list">("map");
   const [showFilters, setShowFilters] = useState(false);
 
@@ -46,10 +46,10 @@ export function StoresContent() {
         store.address.toLowerCase().includes(searchQuery.toLowerCase());
 
       const matchesProvincia =
-        selectedProvincia === "" || store.provincia === selectedProvincia;
+        selectedProvincia === "" || selectedProvincia === "all" || store.provincia === selectedProvincia;
 
       const matchesZona =
-        selectedZona === "" || store.zona === selectedZona;
+        selectedZona === "" || selectedZona === "all" || store.zona === selectedZona;
 
       return matchesSearch && matchesProvincia && matchesZona;
     });
@@ -64,11 +64,11 @@ export function StoresContent() {
 
   const clearFilters = () => {
     setSearchQuery("");
-    setSelectedProvincia("");
-    setSelectedZona("");
+    setSelectedProvincia("all");
+    setSelectedZona("all");
   };
 
-  const hasActiveFilters = searchQuery || selectedProvincia || selectedZona;
+  const hasActiveFilters = searchQuery || (selectedProvincia && selectedProvincia !== "all") || (selectedZona && selectedZona !== "all");
 
   return (
     <section className="py-8 sm:py-12">
@@ -140,7 +140,7 @@ export function StoresContent() {
                 </SelectTrigger>
                 <SelectContent>
                   {zonas.map((zona) => (
-                    <SelectItem key={zona.value || "all"} value={zona.value || "all"}>
+                    <SelectItem key={zona.value} value={zona.value}>
                       {zona.label}
                     </SelectItem>
                   ))}
@@ -153,7 +153,7 @@ export function StoresContent() {
                 </SelectTrigger>
                 <SelectContent>
                   {provincias.map((provincia) => (
-                    <SelectItem key={provincia.value || "all"} value={provincia.value || "all"}>
+                    <SelectItem key={provincia.value} value={provincia.value}>
                       {provincia.label}
                     </SelectItem>
                   ))}
@@ -186,12 +186,12 @@ export function StoresContent() {
             </p>
             {hasActiveFilters && (
               <div className="flex flex-wrap gap-2">
-                {selectedZona && (
+                {selectedZona && selectedZona !== "all" && (
                   <span className="inline-flex items-center px-2 py-1 text-xs bg-primary/10 text-primary rounded-full">
                     {selectedZona}
                   </span>
                 )}
-                {selectedProvincia && (
+                {selectedProvincia && selectedProvincia !== "all" && (
                   <span className="inline-flex items-center px-2 py-1 text-xs bg-primary/10 text-primary rounded-full">
                     {selectedProvincia}
                   </span>

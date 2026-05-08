@@ -48,7 +48,7 @@ export interface Store {
 }
 
 export const provincias: { value: string; label: string }[] = [
-  { value: "", label: "Todas las provincias" },
+  { value: "all", label: "Todas las provincias" },
   { value: "Buenos Aires", label: "Buenos Aires" },
   { value: "CABA", label: "Ciudad Autónoma de Bs As" },
   { value: "Catamarca", label: "Catamarca" },
@@ -76,7 +76,7 @@ export const provincias: { value: string; label: string }[] = [
 ];
 
 export const zonas: { value: string; label: string }[] = [
-  { value: "", label: "Todas las zonas" },
+  { value: "all", label: "Todas las zonas" },
   { value: "CABA", label: "CABA" },
   { value: "GBA Norte", label: "GBA Norte" },
   { value: "GBA Sur", label: "GBA Sur" },
