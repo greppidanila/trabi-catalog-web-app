@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Play, Clock } from "lucide-react";
 import { tutorials } from "@/data/products";
 import { cn } from "@/lib/utils";
+import { Sparkle, SemiCircle, DotGrid, Swoosh, Sunburst } from "@/components/decorative/fun-shapes";
 
 const categoryColors: Record<string, string> = {
   "Brush y Lettering": "bg-[#cc002d]",
@@ -15,8 +16,25 @@ export function TutorialsSection() {
   const displayTutorials = tutorials.slice(0, 3);
 
   return (
-    <section className="py-16 sm:py-24 bg-background">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <section className="py-16 sm:py-24 bg-background relative overflow-hidden">
+      {/* Fun decorative shapes */}
+      <div className="absolute right-10 top-16 opacity-10">
+        <Sunburst className="w-20 h-20" color="#f20036" />
+      </div>
+      <div className="absolute left-20 top-1/3 opacity-8">
+        <DotGrid className="w-16 h-16" color="#f20036" cols={3} rows={3} />
+      </div>
+      <div className="absolute right-1/4 bottom-10 opacity-10">
+        <Sparkle className="w-14 h-14 rotate-12" color="#f20036" />
+      </div>
+      <div className="absolute -left-8 bottom-20 opacity-10">
+        <SemiCircle className="w-28 h-14 rotate-90" color="#f20036" />
+      </div>
+      <div className="absolute left-1/2 top-8 opacity-8">
+        <Swoosh className="w-24 h-12" color="#f20036" />
+      </div>
+      
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
           <div>
             <h2 className="font-serif text-3xl tracking-wide text-foreground sm:text-4xl md:text-5xl">

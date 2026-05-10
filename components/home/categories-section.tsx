@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Briefcase, Pencil, PenTool, Palette } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Star4Point, Squiggle, DotGrid, Ring, Cross } from "@/components/decorative/fun-shapes";
 
 const categoryCards = [
   {
@@ -44,8 +45,25 @@ const categoryCards = [
 
 export function CategoriesSection() {
   return (
-    <section className="py-16 sm:py-24 bg-background">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <section className="py-16 sm:py-24 bg-background relative overflow-hidden">
+      {/* Fun decorative shapes */}
+      <div className="absolute left-10 top-10 opacity-10">
+        <Star4Point className="w-16 h-16 rotate-12" color="#f20036" />
+      </div>
+      <div className="absolute right-20 top-20 opacity-8">
+        <DotGrid className="w-20 h-20" color="#f20036" cols={3} rows={3} />
+      </div>
+      <div className="absolute left-1/3 bottom-8 opacity-10">
+        <Squiggle className="w-32 h-10" color="#f20036" />
+      </div>
+      <div className="absolute right-10 bottom-16 opacity-10">
+        <Ring className="w-14 h-14" color="#f20036" strokeWidth={4} />
+      </div>
+      <div className="absolute -left-4 top-1/2 opacity-8">
+        <Cross className="w-10 h-10 rotate-45" color="#f20036" />
+      </div>
+      
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center">
           <h2 className="font-serif text-3xl tracking-wide text-foreground sm:text-4xl md:text-5xl">
             Nuestras Categorías
