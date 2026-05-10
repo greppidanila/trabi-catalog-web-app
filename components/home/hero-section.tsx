@@ -1,6 +1,5 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Starburst, Star4Point, Sparkle, Ring, DotGrid, Squiggle, SemiCircle, Swoosh, QuarterCircle } from "@/components/decorative/fun-shapes";
 
 export function HeroSection() {
   return (
@@ -15,41 +14,8 @@ export function HeroSection() {
         sizes="100vw"
       />
       
-      {/* Soft Red Overlay - more transparent to show image */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#8b0022]/60 via-[#f20036]/40 to-[#8b0022]/60" />
-
-      {/* Fun Decorative Shapes - Left Side */}
-      <div className="hidden lg:block absolute left-4 xl:left-16 top-1/4 z-20">
-        <div className="flex flex-col items-start gap-6">
-          <Starburst className="w-20 h-20 drop-shadow-lg" color="white" />
-          <DotGrid className="w-16 h-16 opacity-80" color="white" cols={3} rows={3} />
-          <Ring className="w-16 h-16 opacity-70" color="white" strokeWidth={6} />
-        </div>
-      </div>
-      
-      {/* Fun Decorative Shapes - Right Side */}
-      <div className="hidden lg:block absolute right-4 xl:right-16 top-1/3 z-20">
-        <div className="flex flex-col items-end gap-6">
-          <Star4Point className="w-16 h-16 drop-shadow-lg rotate-12" color="white" />
-          <Squiggle className="w-28 h-10 opacity-80" color="white" />
-          <Sparkle className="w-12 h-12 drop-shadow-lg -rotate-12" color="white" />
-        </div>
-      </div>
-
-      {/* Bottom left shapes */}
-      <div className="hidden lg:block absolute left-8 xl:left-24 bottom-32 z-20">
-        <SemiCircle className="w-24 h-12 opacity-60 rotate-180" color="white" />
-      </div>
-
-      {/* Bottom right shapes */}
-      <div className="hidden lg:block absolute right-8 xl:right-24 bottom-40 z-20">
-        <Swoosh className="w-28 h-14 opacity-70" color="white" />
-      </div>
-
-      {/* Corner accents */}
-      <div className="hidden xl:block absolute left-0 top-20 z-20 opacity-30">
-        <QuarterCircle className="w-32 h-32" color="white" />
-      </div>
+      {/* Soft Red Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#8b0022]/55 via-[#f20036]/35 to-[#8b0022]/55" />
       
       {/* Content */}
       <div className="relative z-10 mx-auto max-w-7xl px-4 pt-40 pb-32 text-center sm:px-6 lg:px-8">
