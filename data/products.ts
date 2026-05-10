@@ -15,6 +15,20 @@ export type Product = {
   colors?: string[];
   image?: string;
   featured?: boolean;
+  // Technical specs
+  specs?: {
+    tipType?: string; // Tipo de punta
+    tipSize?: string; // Tamaño de punta
+    inkType?: string; // Tipo de tinta
+    material?: string; // Material
+    washable?: boolean; // Lavable
+    refillable?: boolean; // Recargable
+    capacity?: string; // Capacidad
+    surface?: string; // Superficie recomendada
+  };
+  tags?: string[]; // Tags for filtering
+  isNew?: boolean;
+  isEco?: boolean;
 };
 
 export const categories: { name: Category; color: string; icon: string }[] = [
@@ -104,6 +118,14 @@ export const products: Product[] = [
     colors: ["#000000", "#f20036", "#3b82f6", "#22c55e", "#f59e0b", "#8b5cf6"],
     image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/imgi_3_banner-img-2-Uqgdtt1p8Wst3TApZM9iLhGgEceGsI.png",
     featured: true,
+    specs: {
+      tipType: "Punta pincel flexible",
+      tipSize: "1-4mm",
+      inkType: "Base agua",
+      washable: true,
+      surface: "Papel, cartulina",
+    },
+    tags: ["lettering", "caligrafía", "arte"],
   },
   {
     id: "2",
@@ -116,6 +138,15 @@ export const products: Product[] = [
     colors: ["#fde68a", "#fecaca", "#bfdbfe", "#bbf7d0", "#e9d5ff", "#fed7aa"],
     image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/imgi_3_banner-img-2-Uqgdtt1p8Wst3TApZM9iLhGgEceGsI.png",
     featured: true,
+    specs: {
+      tipType: "Punta pincel flexible",
+      tipSize: "1-4mm",
+      inkType: "Base agua",
+      washable: true,
+      surface: "Papel, cartulina",
+    },
+    tags: ["pastel", "bullet journal", "decoración"],
+    isNew: true,
   },
   {
     id: "3",
@@ -128,6 +159,14 @@ export const products: Product[] = [
     colors: ["#000000", "#f20036", "#3b82f6", "#22c55e", "#f59e0b", "#ec4899"],
     image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/imgi_4_banner-img-3-1cYTs8Cji068EKvEGYHjPDYaX5fDiU.png",
     featured: true,
+    specs: {
+      tipType: "Punta pincel grande",
+      tipSize: "2-6mm",
+      inkType: "Base agua",
+      washable: true,
+      surface: "Papel, cartulina, lienzo",
+    },
+    tags: ["lettering", "dibujo", "arte"],
   },
   {
     id: "4",
@@ -180,6 +219,14 @@ export const products: Product[] = [
     variants: ["x12", "x24", "x36"],
     image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/imgi_7_Difumio-uDHO34ErmHQvZaedXc0z0fiUEM7DCX.jpg",
     featured: true,
+    specs: {
+      tipType: "Punta cónica",
+      material: "Cera premium",
+      washable: true,
+      surface: "Papel, cartulina",
+    },
+    tags: ["escolar", "arte", "difuminar"],
+    isNew: true,
   },
   {
     id: "9",
@@ -212,6 +259,14 @@ export const products: Product[] = [
     colors: ["#000000", "#ffffff", "#f20036", "#3b82f6", "#22c55e", "#f59e0b"],
     image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/imgi_8_Acrylic-7JLvDVbau3nxGDas3hq5LqEf8FTkTr.jpg",
     featured: true,
+    specs: {
+      tipType: "Punta redonda a válvula",
+      tipSize: "2-4mm",
+      inkType: "Acrílica",
+      refillable: true,
+      surface: "Madera, vidrio, cerámica, tela, metal, piedra",
+    },
+    tags: ["manualidades", "decoración", "artístico"],
   },
   {
     id: "12",
@@ -265,6 +320,15 @@ export const products: Product[] = [
     colors: ["#000000", "#f20036", "#3b82f6", "#22c55e"],
     image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/imgi_5_banner-img-4-mWRMayvSaST44igkdtzBEGJkz5Ch4d.png",
     featured: true,
+    specs: {
+      tipType: "Punta biselada",
+      tipSize: "2-4mm",
+      inkType: "Base alcohol",
+      refillable: true,
+      surface: "Pizarra blanca",
+    },
+    tags: ["oficina", "recargable", "eco"],
+    isEco: true,
   },
   {
     id: "17",

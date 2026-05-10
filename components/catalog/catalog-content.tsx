@@ -20,6 +20,12 @@ export function CatalogContent() {
   const [sortBy, setSortBy] = useState<SortOption>("featured");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
+  // New filters
+  const [showNew, setShowNew] = useState(false);
+  const [showEco, setShowEco] = useState(false);
+  const [showFeatured, setShowFeatured] = useState(false);
+  const [showWashable, setShowWashable] = useState(false);
+  const [showRefillable, setShowRefillable] = useState(false);
 
   // Initialize from URL params
   useEffect(() => {
@@ -53,6 +59,31 @@ export function CatalogContent() {
     // Subcategory filter
     if (selectedSubcategories.length > 0) {
       result = result.filter((p) => selectedSubcategories.includes(p.subcategory));
+    }
+
+    // New filter
+    if (showNew) {
+      result = result.filter((p) => p.isNew);
+    }
+
+    // Eco filter
+    if (showEco) {
+      result = result.filter((p) => p.isEco);
+    }
+
+    // Featured filter
+    if (showFeatured) {
+      result = result.filter((p) => p.featured);
+    }
+
+    // Washable filter
+    if (showWashable) {
+      result = result.filter((p) => p.specs?.washable);
+    }
+
+    // Refillable filter
+    if (showRefillable) {
+      result = result.filter((p) => p.specs?.refillable);
     }
 
     // Sort
@@ -103,13 +134,23 @@ export function CatalogContent() {
     setSelectedCategory("Todos");
     setSelectedSubcategories([]);
     setSortBy("featured");
+    setShowNew(false);
+    setShowEco(false);
+    setShowFeatured(false);
+    setShowWashable(false);
+    setShowRefillable(false);
     router.push("/catalogo", { scroll: false });
   };
 
   const activeFiltersCount =
     (selectedCategory !== "Todos" ? 1 : 0) +
     selectedSubcategories.length +
-    (searchQuery ? 1 : 0);
+    (searchQuery ? 1 : 0) +
+    (showNew ? 1 : 0) +
+    (showEco ? 1 : 0) +
+    (showFeatured ? 1 : 0) +
+    (showWashable ? 1 : 0) +
+    (showRefillable ? 1 : 0);
 
   const FilterSidebar = () => (
     <div className="space-y-6">
@@ -167,6 +208,71 @@ export function CatalogContent() {
           </div>
         </div>
       )}
+
+      {/* Highlights Filter */}
+      <div>
+        <h3 className="font-semibold text-foreground mb-3">Destacados</h3>
+        <div className="space-y-2">
+          <label className="flex items-center gap-2 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={showNew}
+              onChange={(e) => setShowNew(e.target.checked)}
+              className="h-4 w-4 text-primary border-border rounded focus:ring-primary"
+            />
+            <span className="text-sm flex items-center gap-1.5">
+              <span className="h-2 w-2 rounded-full bg-[#f20036]" />
+              Nuevos
+            </span>
+          </label>
+          <label className="flex items-center gap-2 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={showFeatured}
+              onChange={(e) => setShowFeatured(e.target.checked)}
+              className="h-4 w-4 text-primary border-border rounded focus:ring-primary"
+            />
+            <span className="text-sm">Solo destacados</span>
+          </label>
+          <label className="flex items-center gap-2 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={showEco}
+              onChange={(e) => setShowEco(e.target.checked)}
+              className="h-4 w-4 text-primary border-border rounded focus:ring-primary"
+            />
+            <span className="text-sm flex items-center gap-1.5">
+              <span className="h-2 w-2 rounded-full bg-emerald-500" />
+              Ecológicos
+            </span>
+          </label>
+        </div>
+      </div>
+
+      {/* Features Filter */}
+      <div>
+        <h3 className="font-semibold text-foreground mb-3">Características</h3>
+        <div className="space-y-2">
+          <label className="flex items-center gap-2 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={showWashable}
+              onChange={(e) => setShowWashable(e.target.checked)}
+              className="h-4 w-4 text-primary border-border rounded focus:ring-primary"
+            />
+            <span className="text-sm">Lavables</span>
+          </label>
+          <label className="flex items-center gap-2 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={showRefillable}
+              onChange={(e) => setShowRefillable(e.target.checked)}
+              className="h-4 w-4 text-primary border-border rounded focus:ring-primary"
+            />
+            <span className="text-sm">Recargables</span>
+          </label>
+        </div>
+      </div>
 
       {/* Sort */}
       <div>

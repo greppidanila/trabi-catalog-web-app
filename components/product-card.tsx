@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { Plus } from "lucide-react";
+import Link from "next/link";
+import { Plus, ExternalLink } from "lucide-react";
 import { Product, categories } from "@/data/products";
 import { useCart } from "@/context/cart-context";
 import { cn } from "@/lib/utils";
@@ -86,7 +87,7 @@ export function ProductCard({ product, view = "grid" }: ProductCardProps) {
   return (
     <div className="group overflow-hidden rounded-lg border bg-card transition-all hover:shadow-lg">
       {/* Image */}
-      <div className="relative aspect-square overflow-hidden bg-muted">
+      <Link href={`/producto/${product.id}`} className="block relative aspect-square overflow-hidden bg-muted">
         {product.image ? (
           <Image
             src={product.image}
@@ -116,12 +117,19 @@ export function ProductCard({ product, view = "grid" }: ProductCardProps) {
         >
           {product.category}
         </span>
-      </div>
+        {product.isNew && (
+          <span className="absolute right-3 top-3 rounded-full bg-[#f20036] px-2 py-0.5 text-xs font-medium text-white">
+            Nuevo
+          </span>
+        )}
+      </Link>
 
       {/* Content */}
       <div className="p-4">
         <p className="font-mono text-xs text-muted-foreground">{product.code}</p>
-        <h3 className="mt-1 font-semibold leading-tight">{product.name}</h3>
+        <Link href={`/producto/${product.id}`} className="block">
+          <h3 className="mt-1 font-semibold leading-tight hover:text-primary transition-colors">{product.name}</h3>
+        </Link>
         <p className="mt-1 text-sm text-muted-foreground line-clamp-2">
           {product.description}
         </p>

@@ -3,13 +3,22 @@
 import Link from "next/link";
 import { products } from "@/data/products";
 import { ProductCard } from "@/components/product-card";
+import { ScribbleDecoration } from "@/components/decorative/marker-elements";
 
 export function FeaturedSection() {
   const featuredProducts = products.filter((p) => p.featured).slice(0, 4);
 
   return (
-    <section className="py-16 sm:py-24 bg-card">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <section className="py-16 sm:py-24 bg-card relative overflow-hidden">
+      {/* Decorative scribbles */}
+      <div className="absolute -left-10 top-20 opacity-20 rotate-12">
+        <ScribbleDecoration className="w-32 h-32" />
+      </div>
+      <div className="absolute -right-10 bottom-20 opacity-20 -rotate-12">
+        <ScribbleDecoration className="w-40 h-40" />
+      </div>
+      
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
           <div>
             <h2 className="font-serif text-3xl tracking-wide text-foreground sm:text-4xl md:text-5xl">

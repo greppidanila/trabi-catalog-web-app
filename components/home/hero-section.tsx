@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import { MarkerIllustration, PencilIllustration, BrushMarkerIllustration, CrayonIllustration } from "@/components/decorative/marker-elements";
 
 export function HeroSection() {
   return (
@@ -16,6 +17,22 @@ export function HeroSection() {
       
       {/* Soft Red Overlay - more transparent to show image */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#8b0022]/60 via-[#f20036]/40 to-[#8b0022]/60" />
+
+      {/* Decorative Markers - Left Side */}
+      <div className="hidden lg:block absolute left-4 xl:left-12 top-1/4 z-20 opacity-90">
+        <div className="flex flex-col gap-4 -rotate-12">
+          <MarkerIllustration className="h-48 drop-shadow-2xl" color="#f20036" />
+          <PencilIllustration className="h-44 -ml-2 rotate-6 drop-shadow-2xl" color="#f59e0b" />
+        </div>
+      </div>
+
+      {/* Decorative Markers - Right Side */}
+      <div className="hidden lg:block absolute right-4 xl:right-12 top-1/3 z-20 opacity-90">
+        <div className="flex flex-col gap-4 rotate-12">
+          <BrushMarkerIllustration className="h-52 drop-shadow-2xl" color="#8b5cf6" />
+          <CrayonIllustration className="h-32 ml-4 -rotate-6 drop-shadow-2xl" color="#22c55e" />
+        </div>
+      </div>
       
       {/* Content */}
       <div className="relative z-10 mx-auto max-w-7xl px-4 pt-40 pb-32 text-center sm:px-6 lg:px-8">
