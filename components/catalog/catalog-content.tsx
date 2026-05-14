@@ -44,6 +44,10 @@ export function CatalogContent() {
   const [showFeatured, setShowFeatured] = useState(false);
   const [showWashable, setShowWashable] = useState(false);
   const [showRefillable, setShowRefillable] = useState(false);
+  // Variant filter
+  const [selectedVariants, setSelectedVariants] = useState<string[]>([]);
+  // Tip type filter
+  const [selectedTipTypes, setSelectedTipTypes] = useState<string[]>([]);
 
   // Initialize from URL params
   useEffect(() => {
@@ -107,6 +111,16 @@ export function CatalogContent() {
     if (showWashable) result = result.filter((p) => p.specs?.washable);
     if (showRefillable) result = result.filter((p) => p.specs?.refillable);
 
+    // Variant filter
+    if (selectedVariants.length > 0) {
+      result = result.filter((p) => p.variants.some(v => selectedVariants.includes(v)));
+    }
+
+    // Tip type filter
+    if (selectedTipTypes.length > 0) {
+      result = result.filter((p) => p.specs?.tipType && selectedTipTypes.includes(p.specs.tipType));
+    }
+
     // Sort
     switch (sortBy) {
       case "featured":
@@ -127,7 +141,7 @@ export function CatalogContent() {
     }
 
     return result;
-  }, [searchQuery, selectedCategory, selectedSubcategories, sortBy, showNew, showEco, showFeatured, showWashable, showRefillable]);
+  }, [searchQuery, selectedCategory, selectedSubcategories, sortBy, showNew, showEco, showFeatured, showWashable, showRefillable, selectedVariants, selectedTipTypes]);
 
   // Get available subcategories based on selected category
   const availableSubcategories = useMemo(() => {
@@ -136,6 +150,26 @@ export function CatalogContent() {
     }
     return subcategories[selectedCategory] || [];
   }, [selectedCategory]);
+
+  // Get unique variants from products
+  const availableVariants = useMemo(() => {
+    const variants = new Set<string>();
+    products.forEach(p => p.variants.forEach(v => variants.add(v)));
+    return Array.from(variants).sort((a, b) => {
+      const numA = parseInt(a.replace(/\D/g, ''));
+      const numB = parseInt(b.replace(/\D/g, ''));
+      return numA - numB;
+    });
+  }, []);
+
+  // Get unique tip types from products
+  const availableTipTypes = useMemo(() => {
+    const tipTypes = new Set<string>();
+    products.forEach(p => {
+      if (p.specs?.tipType) tipTypes.add(p.specs.tipType);
+    });
+    return Array.from(tipTypes);
+  }, []);
 
   // Handlers
   const handleCategoryChange = (category: Category | "Todos") => {
@@ -153,6 +187,22 @@ export function CatalogContent() {
       prev.includes(subcategory)
         ? prev.filter((s) => s !== subcategory)
         : [...prev, subcategory]
+    );
+  };
+
+  const handleVariantToggle = (variant: string) => {
+    setSelectedVariants((prev) =>
+      prev.includes(variant)
+        ? prev.filter((v) => v !== variant)
+        : [...prev, variant]
+    );
+  };
+
+  const handleTipTypeToggle = (tipType: string) => {
+    setSelectedTipTypes((prev) =>
+      prev.includes(tipType)
+        ? prev.filter((t) => t !== tipType)
+        : [...prev, tipType]
     );
   };
 
@@ -177,6 +227,8 @@ export function CatalogContent() {
     setShowFeatured(false);
     setShowWashable(false);
     setShowRefillable(false);
+    setSelectedVariants([]);
+    setSelectedTipTypes([]);
     router.push("/catalogo", { scroll: false });
   };
 
@@ -187,24 +239,26 @@ export function CatalogContent() {
     (showEco ? 1 : 0) +
     (showFeatured ? 1 : 0) +
     (showWashable ? 1 : 0) +
-    (showRefillable ? 1 : 0);
+    (showRefillable ? 1 : 0) +
+    selectedVariants.length +
+    selectedTipTypes.length;
 
   const FilterSidebar = () => (
-    <div className="space-y-4">
+    <div className="space-y-3">
       {/* Subcategory Filter - Only when category selected */}
       {selectedCategory !== "Todos" && availableSubcategories.length > 0 && (
         <div>
-          <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Subcategoria</h3>
-          <div className="space-y-0.5 max-h-40 overflow-y-auto">
+          <h3 className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">Subcategoria</h3>
+          <div className="space-y-0 max-h-32 overflow-y-auto">
             {availableSubcategories.map((sub) => (
-              <label key={sub} className="flex items-start gap-2 cursor-pointer px-2 py-1.5 rounded hover:bg-muted transition-colors">
+              <label key={sub} className="flex items-start gap-1.5 cursor-pointer px-1.5 py-1 rounded hover:bg-muted transition-colors">
                 <input
                   type="checkbox"
                   checked={selectedSubcategories.includes(sub)}
                   onChange={() => handleSubcategoryToggle(sub)}
-                  className="h-3.5 w-3.5 mt-0.5 text-primary border-border rounded focus:ring-primary"
+                  className="h-3 w-3 mt-0.5 text-primary border-border rounded focus:ring-primary"
                 />
-                <span className="text-xs leading-tight">{sub}</span>
+                <span className="text-[11px] leading-tight">{sub}</span>
               </label>
             ))}
           </div>
@@ -213,15 +267,13 @@ export function CatalogContent() {
 
       {/* Quick Filters */}
       <div>
-        <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Filtros</h3>
-        <div className="flex flex-wrap gap-1.5">
+        <h3 className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">Caracteristicas</h3>
+        <div className="flex flex-wrap gap-1">
           <button
             onClick={() => setShowNew(!showNew)}
             className={cn(
-              "px-2.5 py-1 rounded-full text-xs font-medium transition-colors",
-              showNew
-                ? "bg-[#f20036] text-white"
-                : "bg-muted hover:bg-muted/80"
+              "px-2 py-0.5 rounded-full text-[10px] font-medium transition-colors",
+              showNew ? "bg-[#f20036] text-white" : "bg-muted hover:bg-muted/80"
             )}
           >
             Nuevos
@@ -229,10 +281,8 @@ export function CatalogContent() {
           <button
             onClick={() => setShowFeatured(!showFeatured)}
             className={cn(
-              "px-2.5 py-1 rounded-full text-xs font-medium transition-colors",
-              showFeatured
-                ? "bg-amber-500 text-white"
-                : "bg-muted hover:bg-muted/80"
+              "px-2 py-0.5 rounded-full text-[10px] font-medium transition-colors",
+              showFeatured ? "bg-amber-500 text-white" : "bg-muted hover:bg-muted/80"
             )}
           >
             Destacados
@@ -240,10 +290,8 @@ export function CatalogContent() {
           <button
             onClick={() => setShowEco(!showEco)}
             className={cn(
-              "px-2.5 py-1 rounded-full text-xs font-medium transition-colors",
-              showEco
-                ? "bg-emerald-600 text-white"
-                : "bg-muted hover:bg-muted/80"
+              "px-2 py-0.5 rounded-full text-[10px] font-medium transition-colors",
+              showEco ? "bg-emerald-600 text-white" : "bg-muted hover:bg-muted/80"
             )}
           >
             Eco
@@ -251,10 +299,8 @@ export function CatalogContent() {
           <button
             onClick={() => setShowWashable(!showWashable)}
             className={cn(
-              "px-2.5 py-1 rounded-full text-xs font-medium transition-colors",
-              showWashable
-                ? "bg-sky-500 text-white"
-                : "bg-muted hover:bg-muted/80"
+              "px-2 py-0.5 rounded-full text-[10px] font-medium transition-colors",
+              showWashable ? "bg-sky-500 text-white" : "bg-muted hover:bg-muted/80"
             )}
           >
             Lavables
@@ -262,10 +308,8 @@ export function CatalogContent() {
           <button
             onClick={() => setShowRefillable(!showRefillable)}
             className={cn(
-              "px-2.5 py-1 rounded-full text-xs font-medium transition-colors",
-              showRefillable
-                ? "bg-violet-600 text-white"
-                : "bg-muted hover:bg-muted/80"
+              "px-2 py-0.5 rounded-full text-[10px] font-medium transition-colors",
+              showRefillable ? "bg-violet-600 text-white" : "bg-muted hover:bg-muted/80"
             )}
           >
             Recargables
@@ -273,13 +317,54 @@ export function CatalogContent() {
         </div>
       </div>
 
+      {/* Variant Filter */}
+      <div>
+        <h3 className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">Presentacion</h3>
+        <div className="flex flex-wrap gap-1">
+          {availableVariants.slice(0, 8).map((variant) => (
+            <button
+              key={variant}
+              onClick={() => handleVariantToggle(variant)}
+              className={cn(
+                "px-2 py-0.5 rounded-full text-[10px] font-medium transition-colors",
+                selectedVariants.includes(variant)
+                  ? "bg-primary text-white"
+                  : "bg-muted hover:bg-muted/80"
+              )}
+            >
+              {variant}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Tip Type Filter */}
+      {availableTipTypes.length > 0 && (
+        <div>
+          <h3 className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">Tipo de punta</h3>
+          <div className="space-y-0 max-h-24 overflow-y-auto">
+            {availableTipTypes.map((tipType) => (
+              <label key={tipType} className="flex items-start gap-1.5 cursor-pointer px-1.5 py-1 rounded hover:bg-muted transition-colors">
+                <input
+                  type="checkbox"
+                  checked={selectedTipTypes.includes(tipType)}
+                  onChange={() => handleTipTypeToggle(tipType)}
+                  className="h-3 w-3 mt-0.5 text-primary border-border rounded focus:ring-primary"
+                />
+                <span className="text-[11px] leading-tight">{tipType}</span>
+              </label>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* Sort */}
       <div>
-        <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Ordenar</h3>
+        <h3 className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider mb-1.5">Ordenar</h3>
         <select
           value={sortBy}
           onChange={(e) => setSortBy(e.target.value as SortOption)}
-          className="w-full rounded-lg border bg-background px-2.5 py-2 text-xs focus:outline-none focus:ring-1 focus:ring-primary"
+          className="w-full rounded border bg-background px-2 py-1.5 text-[11px] focus:outline-none focus:ring-1 focus:ring-primary"
         >
           <option value="featured">Destacados</option>
           <option value="newest">Recientes</option>
@@ -292,95 +377,20 @@ export function CatalogContent() {
       {activeFiltersCount > 0 && (
         <button
           onClick={clearFilters}
-          className="w-full rounded-lg border border-dashed px-3 py-2 text-xs font-medium text-muted-foreground hover:border-primary hover:text-primary transition-colors"
+          className="w-full rounded border border-dashed px-2 py-1.5 text-[11px] font-medium text-muted-foreground hover:border-primary hover:text-primary transition-colors"
         >
-          Limpiar filtros ({activeFiltersCount})
+          Limpiar ({activeFiltersCount})
         </button>
       )}
     </div>
   );
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
-      {/* Compact Header with Search */}
-      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-4">
-        <h1 className="font-serif text-2xl tracking-wide text-foreground sm:text-3xl">
-          Catalogo
-        </h1>
-        
-        {/* Search Bar */}
-        <form onSubmit={handleSearchSubmit} className="relative flex-1 max-w-md">
-          <div className={cn(
-            "relative rounded-full border bg-card transition-all",
-            isSearchFocused ? "border-primary ring-2 ring-primary/20" : "border-border"
-          )}>
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-            <input
-              ref={searchInputRef}
-              type="text"
-              placeholder="Buscar productos..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              onFocus={() => setIsSearchFocused(true)}
-              onBlur={() => setTimeout(() => setIsSearchFocused(false), 200)}
-              className="w-full rounded-full bg-transparent pl-9 pr-9 py-2 text-sm focus:outline-none"
-            />
-            {searchQuery && (
-              <button
-                type="button"
-                onClick={() => setSearchQuery("")}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                aria-label="Limpiar busqueda"
-              >
-                <X className="h-4 w-4" />
-              </button>
-            )}
-          </div>
-
-          {/* Search Suggestions Dropdown */}
-          {isSearchFocused && (
-            <div className="absolute top-full left-0 right-0 mt-1 rounded-lg border bg-card shadow-lg z-50 overflow-hidden">
-              {searchQuery.length >= 2 && searchSuggestions.length > 0 ? (
-                <div className="py-1">
-                  {searchSuggestions.map((product) => (
-                    <button
-                      key={product.id}
-                      type="button"
-                      onClick={() => {
-                        setSearchQuery(product.name);
-                        setIsSearchFocused(false);
-                      }}
-                      className="w-full flex items-center gap-2 px-3 py-2 hover:bg-muted transition-colors text-left"
-                    >
-                      <Search className="h-3.5 w-3.5 text-muted-foreground flex-shrink-0" />
-                      <span className="text-sm truncate">{product.name}</span>
-                    </button>
-                  ))}
-                </div>
-              ) : (
-                <div className="py-1">
-                  <p className="px-3 py-1 text-xs text-muted-foreground">Busquedas populares</p>
-                  {popularSearches.slice(0, 3).map((term) => (
-                    <button
-                      key={term}
-                      type="button"
-                      onClick={() => handleSuggestionClick(term)}
-                      className="w-full flex items-center gap-2 px-3 py-1.5 hover:bg-muted transition-colors text-left"
-                    >
-                      <TrendingUp className="h-3 w-3 text-muted-foreground" />
-                      <span className="text-sm">{term}</span>
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-          )}
-        </form>
-      </div>
-
-      {/* Category Pills + Results Count - Same Line */}
-      <div className="flex items-center justify-between gap-4 mb-4 pb-3 border-b">
-        <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide flex-1">
+    <div className="mx-auto max-w-7xl px-4 py-3 sm:px-6 lg:px-8">
+      {/* Single Row: Categories + Search + Count */}
+      <div className="flex items-center gap-3 mb-3 pb-3 border-b">
+        {/* Category Pills */}
+        <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-hide">
           <button
             onClick={() => handleCategoryChange("Todos")}
             className={cn(
@@ -408,15 +418,110 @@ export function CatalogContent() {
           ))}
         </div>
         
-        <div className="flex items-center gap-2 flex-shrink-0">
-          <span className="text-sm text-muted-foreground whitespace-nowrap">
-            {filteredProducts.length} producto{filteredProducts.length !== 1 ? "s" : ""}
-          </span>
-        </div>
+        {/* Search Bar - Inline */}
+        <form onSubmit={handleSearchSubmit} className="relative hidden sm:block flex-1 max-w-xs ml-auto">
+          <div className={cn(
+            "relative rounded-full border bg-card transition-all",
+            isSearchFocused ? "border-primary ring-1 ring-primary/20" : "border-border"
+          )}>
+            <Search className="absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
+            <input
+              ref={searchInputRef}
+              type="text"
+              placeholder="Buscar..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onFocus={() => setIsSearchFocused(true)}
+              onBlur={() => setTimeout(() => setIsSearchFocused(false), 200)}
+              className="w-full rounded-full bg-transparent pl-8 pr-8 py-1.5 text-xs focus:outline-none"
+            />
+            {searchQuery && (
+              <button
+                type="button"
+                onClick={() => setSearchQuery("")}
+                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                aria-label="Limpiar busqueda"
+              >
+                <X className="h-3.5 w-3.5" />
+              </button>
+            )}
+          </div>
+
+          {/* Search Suggestions Dropdown */}
+          {isSearchFocused && (
+            <div className="absolute top-full left-0 right-0 mt-1 rounded-lg border bg-card shadow-lg z-50 overflow-hidden">
+              {searchQuery.length >= 2 && searchSuggestions.length > 0 ? (
+                <div className="py-1">
+                  {searchSuggestions.map((product) => (
+                    <button
+                      key={product.id}
+                      type="button"
+                      onClick={() => {
+                        setSearchQuery(product.name);
+                        setIsSearchFocused(false);
+                      }}
+                      className="w-full flex items-center gap-2 px-3 py-1.5 hover:bg-muted transition-colors text-left"
+                    >
+                      <Search className="h-3 w-3 text-muted-foreground flex-shrink-0" />
+                      <span className="text-xs truncate">{product.name}</span>
+                    </button>
+                  ))}
+                </div>
+              ) : (
+                <div className="py-1">
+                  {popularSearches.slice(0, 3).map((term) => (
+                    <button
+                      key={term}
+                      type="button"
+                      onClick={() => handleSuggestionClick(term)}
+                      className="w-full flex items-center gap-2 px-3 py-1 hover:bg-muted transition-colors text-left"
+                    >
+                      <TrendingUp className="h-3 w-3 text-muted-foreground" />
+                      <span className="text-xs">{term}</span>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+        </form>
+
+        {/* Results Count */}
+        <span className="text-xs text-muted-foreground whitespace-nowrap flex-shrink-0">
+          {filteredProducts.length} producto{filteredProducts.length !== 1 ? "s" : ""}
+        </span>
       </div>
 
+      {/* Mobile Search */}
+      <form onSubmit={handleSearchSubmit} className="relative sm:hidden mb-3">
+        <div className={cn(
+          "relative rounded-full border bg-card transition-all",
+          isSearchFocused ? "border-primary ring-1 ring-primary/20" : "border-border"
+        )}>
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <input
+            type="text"
+            placeholder="Buscar productos..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            onFocus={() => setIsSearchFocused(true)}
+            onBlur={() => setTimeout(() => setIsSearchFocused(false), 200)}
+            className="w-full rounded-full bg-transparent pl-9 pr-9 py-2 text-sm focus:outline-none"
+          />
+          {searchQuery && (
+            <button
+              type="button"
+              onClick={() => setSearchQuery("")}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          )}
+        </div>
+      </form>
+
       {/* Controls Bar - Compact */}
-      <div className="flex items-center justify-between gap-2 mb-4">
+      <div className="flex items-center justify-between gap-2 mb-3">
         <div className="flex items-center gap-3">
           {/* Mobile Filter Button */}
           <button
@@ -516,10 +621,10 @@ export function CatalogContent() {
       </div>
 
       {/* Main Content */}
-      <div className="flex gap-6">
+      <div className="flex gap-5">
         {/* Desktop Sidebar */}
-        <aside className="hidden lg:block w-56 flex-shrink-0">
-          <div className="sticky top-24 rounded-xl border bg-card p-4">
+        <aside className="hidden lg:block w-52 flex-shrink-0">
+          <div className="sticky top-36 rounded-xl border bg-card p-3">
             <FilterSidebar />
           </div>
         </aside>
