@@ -36,6 +36,7 @@ export default function ProductPage({ params }: PageProps) {
   
   const product = products.find((p) => p.id === id);
   const [selectedVariant, setSelectedVariant] = useState(product?.variants[0] || "");
+  const [selectedColor, setSelectedColor] = useState(product?.colors?.[0] || undefined);
   const [quantity, setQuantity] = useState(1);
   const [addedToCart, setAddedToCart] = useState(false);
 
@@ -72,7 +73,7 @@ export default function ProductPage({ params }: PageProps) {
 
   const handleAddToCart = () => {
     for (let i = 0; i < quantity; i++) {
-      addItem(product, selectedVariant);
+      addItem(product, selectedVariant, selectedColor);
     }
     setAddedToCart(true);
     setTimeout(() => setAddedToCart(false), 2000);
@@ -147,19 +148,25 @@ export default function ProductPage({ params }: PageProps) {
                 {product.description}
               </p>
 
-              {/* Color Swatches */}
+              {/* Color Swatches - Clickable */}
               {product.colors && product.colors.length > 0 && (
                 <div className="mt-6">
                   <h3 className="text-sm font-semibold text-foreground mb-3">
-                    Colores disponibles
+                    Colores disponibles {selectedColor && <span className="font-normal text-muted-foreground">- 1 seleccionado</span>}
                   </h3>
                   <div className="flex flex-wrap gap-2">
                     {product.colors.map((color, index) => (
-                      <span
+                      <button
                         key={index}
-                        className="h-8 w-8 rounded-full border-2 border-white shadow-md"
+                        onClick={() => setSelectedColor(color)}
+                        className={cn(
+                          "h-8 w-8 rounded-full border-2 shadow-md transition-all",
+                          selectedColor === color 
+                            ? "border-foreground scale-110 ring-2 ring-foreground/30" 
+                            : "border-white hover:scale-110"
+                        )}
                         style={{ backgroundColor: color }}
-                        title={`Color ${index + 1}`}
+                        title={`Seleccionar color ${index + 1}`}
                       />
                     ))}
                   </div>

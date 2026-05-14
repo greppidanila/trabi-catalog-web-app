@@ -16,12 +16,13 @@ type ProductCardProps = {
 
 export function ProductCard({ product, view = "grid" }: ProductCardProps) {
   const [selectedVariant, setSelectedVariant] = useState(product.variants[0]);
+  const [selectedColor, setSelectedColor] = useState(product.colors?.[0] || undefined);
   const { addItem } = useCart();
   const { isLibrero } = useAuth();
   const categoryInfo = categories.find((c) => c.name === product.category);
 
   const handleAddToCart = () => {
-    addItem(product, selectedVariant);
+    addItem(product, selectedVariant, selectedColor);
   };
 
   if (view === "list") {
@@ -138,19 +139,25 @@ export function ProductCard({ product, view = "grid" }: ProductCardProps) {
           {product.description}
         </p>
 
-        {/* Color Swatches */}
+        {/* Color Swatches - Clickable */}
         {product.colors && product.colors.length > 0 && (
           <div className="mt-3 flex flex-wrap gap-1.5">
             {product.colors.slice(0, 6).map((color, index) => (
-              <span
+              <button
                 key={index}
-                className="h-4 w-4 rounded-full border border-black/10"
+                onClick={() => setSelectedColor(color)}
+                className={cn(
+                  "h-5 w-5 rounded-full border-2 transition-all",
+                  selectedColor === color 
+                    ? "border-foreground scale-110 ring-2 ring-foreground/20" 
+                    : "border-black/10 hover:scale-110"
+                )}
                 style={{ backgroundColor: color }}
-                aria-label={`Color ${index + 1}`}
+                aria-label={`Seleccionar color ${index + 1}`}
               />
             ))}
             {product.colors.length > 6 && (
-              <span className="flex h-4 items-center text-xs text-muted-foreground">
+              <span className="flex h-5 items-center text-xs text-muted-foreground">
                 +{product.colors.length - 6}
               </span>
             )}
