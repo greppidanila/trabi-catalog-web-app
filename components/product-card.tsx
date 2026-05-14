@@ -3,9 +3,10 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Plus, ExternalLink } from "lucide-react";
+import { Plus, MessageCircle } from "lucide-react";
 import { Product, categories } from "@/data/products";
 import { useCart } from "@/context/cart-context";
+import { useAuth } from "@/context/auth-context";
 import { cn } from "@/lib/utils";
 
 type ProductCardProps = {
@@ -16,6 +17,7 @@ type ProductCardProps = {
 export function ProductCard({ product, view = "grid" }: ProductCardProps) {
   const [selectedVariant, setSelectedVariant] = useState(product.variants[0]);
   const { addItem } = useCart();
+  const { isLibrero } = useAuth();
   const categoryInfo = categories.find((c) => c.name === product.category);
 
   const handleAddToCart = () => {
@@ -72,13 +74,23 @@ export function ProductCard({ product, view = "grid" }: ProductCardProps) {
               </option>
             ))}
           </select>
-          <button
-            onClick={handleAddToCart}
-            className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-white transition-colors hover:bg-primary/90"
-            aria-label="Agregar al pedido"
-          >
-            <Plus className="h-5 w-5" />
-          </button>
+          {isLibrero ? (
+            <button
+              onClick={handleAddToCart}
+              className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-white transition-colors hover:bg-primary/90"
+              aria-label="Agregar al pedido"
+            >
+              <Plus className="h-5 w-5" />
+            </button>
+          ) : (
+            <Link
+              href={`/producto/${product.id}`}
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-primary text-primary transition-colors hover:bg-primary/10"
+              aria-label="Ver producto"
+            >
+              <MessageCircle className="h-5 w-5" />
+            </Link>
+          )}
         </div>
       </div>
     );
@@ -171,14 +183,24 @@ export function ProductCard({ product, view = "grid" }: ProductCardProps) {
           ))}
         </div>
 
-        {/* Add to Cart */}
-        <button
-          onClick={handleAddToCart}
-          className="mt-4 flex w-full items-center justify-center gap-2 rounded-full bg-primary px-4 py-3 font-semibold text-white transition-colors hover:bg-primary/90"
-        >
-          <Plus className="h-4 w-4" />
-          Agregar al pedido
-        </button>
+        {/* Add to Cart or Contact */}
+        {isLibrero ? (
+          <button
+            onClick={handleAddToCart}
+            className="mt-4 flex w-full items-center justify-center gap-2 rounded-full bg-primary px-4 py-3 font-semibold text-white transition-colors hover:bg-primary/90"
+          >
+            <Plus className="h-4 w-4" />
+            Agregar al pedido
+          </button>
+        ) : (
+          <Link
+            href={`/producto/${product.id}`}
+            className="mt-4 flex w-full items-center justify-center gap-2 rounded-full border-2 border-primary px-4 py-3 font-semibold text-primary transition-colors hover:bg-primary hover:text-white"
+          >
+            <MessageCircle className="h-4 w-4" />
+            Consultar producto
+          </Link>
+        )}
       </div>
     </div>
   );

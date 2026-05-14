@@ -1,8 +1,10 @@
 import type { Metadata, Viewport } from 'next'
 import { Nunito, Bebas_Neue } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
+import { AuthProvider } from '@/context/auth-context'
 import { CartProvider } from '@/context/cart-context'
 import { FloatingCart } from '@/components/floating-cart'
+import { LoginModal } from '@/components/auth/login-modal'
 import { PrototypeBanner } from '@/components/prototype-banner'
 import './globals.css'
 
@@ -57,10 +59,13 @@ export default function RootLayout({
     <html lang="es" className={`${nunito.variable} ${bebasNeue.variable} bg-background`}>
       <body className="font-sans antialiased">
         <PrototypeBanner />
-        <CartProvider>
-          {children}
-          <FloatingCart />
-        </CartProvider>
+        <AuthProvider>
+          <CartProvider>
+            {children}
+            <FloatingCart />
+            <LoginModal />
+          </CartProvider>
+        </AuthProvider>
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>

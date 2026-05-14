@@ -2,11 +2,16 @@
 
 import { ShoppingBag, X, Plus, Minus, MessageCircle } from "lucide-react";
 import { useCart } from "@/context/cart-context";
+import { useAuth } from "@/context/auth-context";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 
 export function FloatingCart() {
   const { items, totalItems, isCartOpen, setIsCartOpen, updateQuantity, removeItem } = useCart();
+  const { isLibrero } = useAuth();
+
+  // Only show cart for libreros (wholesale users)
+  if (!isLibrero) return null;
 
   const generateWhatsAppMessage = () => {
     if (items.length === 0) return "";

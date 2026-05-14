@@ -19,6 +19,8 @@ import { ProductCard } from "@/components/product-card";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { useCart } from "@/context/cart-context";
+import { useAuth } from "@/context/auth-context";
+import { ConsultationForm } from "@/components/forms/consultation-form";
 import { cn } from "@/lib/utils";
 
 type PageProps = {
@@ -29,6 +31,7 @@ export default function ProductPage({ params }: PageProps) {
   const { id } = use(params);
   const router = useRouter();
   const { addItem } = useCart();
+  const { isLibrero } = useAuth();
   
   const product = products.find((p) => p.id === id);
   const [selectedVariant, setSelectedVariant] = useState(product?.variants[0] || "");
@@ -201,51 +204,53 @@ export default function ProductPage({ params }: PageProps) {
                 </div>
               </div>
 
-              {/* Quantity & Add to Cart */}
-              <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center">
-                <div className="flex items-center gap-3">
-                  <span className="text-sm font-semibold">Cantidad:</span>
-                  <div className="flex items-center rounded-full border bg-card">
-                    <button
-                      onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                      className="flex h-10 w-10 items-center justify-center rounded-l-full text-muted-foreground hover:text-foreground"
-                      aria-label="Disminuir cantidad"
-                    >
-                      <Minus className="h-4 w-4" />
-                    </button>
-                    <span className="w-12 text-center font-semibold">{quantity}</span>
-                    <button
-                      onClick={() => setQuantity(quantity + 1)}
-                      className="flex h-10 w-10 items-center justify-center rounded-r-full text-muted-foreground hover:text-foreground"
-                      aria-label="Aumentar cantidad"
-                    >
-                      <Plus className="h-4 w-4" />
-                    </button>
+              {/* Quantity & Add to Cart - Only for Libreros */}
+              {isLibrero && (
+                <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center">
+                  <div className="flex items-center gap-3">
+                    <span className="text-sm font-semibold">Cantidad:</span>
+                    <div className="flex items-center rounded-full border bg-card">
+                      <button
+                        onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                        className="flex h-10 w-10 items-center justify-center rounded-l-full text-muted-foreground hover:text-foreground"
+                        aria-label="Disminuir cantidad"
+                      >
+                        <Minus className="h-4 w-4" />
+                      </button>
+                      <span className="w-12 text-center font-semibold">{quantity}</span>
+                      <button
+                        onClick={() => setQuantity(quantity + 1)}
+                        className="flex h-10 w-10 items-center justify-center rounded-r-full text-muted-foreground hover:text-foreground"
+                        aria-label="Aumentar cantidad"
+                      >
+                        <Plus className="h-4 w-4" />
+                      </button>
+                    </div>
                   </div>
-                </div>
 
-                <button
-                  onClick={handleAddToCart}
-                  className={cn(
-                    "flex-1 sm:flex-initial flex items-center justify-center gap-2 rounded-full px-8 py-4 font-semibold text-white transition-all",
-                    addedToCart 
-                      ? "bg-emerald-600" 
-                      : "bg-primary hover:bg-primary/90"
-                  )}
-                >
-                  {addedToCart ? (
-                    <>
-                      <Check className="h-5 w-5" />
-                      Agregado al pedido
-                    </>
-                  ) : (
-                    <>
-                      <Plus className="h-5 w-5" />
-                      Agregar al pedido
-                    </>
-                  )}
-                </button>
-              </div>
+                  <button
+                    onClick={handleAddToCart}
+                    className={cn(
+                      "flex-1 sm:flex-initial flex items-center justify-center gap-2 rounded-full px-8 py-4 font-semibold text-white transition-all",
+                      addedToCart 
+                        ? "bg-emerald-600" 
+                        : "bg-primary hover:bg-primary/90"
+                    )}
+                  >
+                    {addedToCart ? (
+                      <>
+                        <Check className="h-5 w-5" />
+                        Agregado al pedido
+                      </>
+                    ) : (
+                      <>
+                        <Plus className="h-5 w-5" />
+                        Agregar al pedido
+                      </>
+                    )}
+                  </button>
+                </div>
+              )}
 
               {/* Technical Specs */}
               {product.specs && (
@@ -316,6 +321,24 @@ export default function ProductPage({ params }: PageProps) {
                       #{tag}
                     </span>
                   ))}
+                </div>
+              )}
+
+              {/* Consultation Form for Public Users */}
+              {!isLibrero && (
+                <div className="mt-10 rounded-xl border bg-card p-6">
+                  <h3 className="font-serif text-xl tracking-wide text-foreground mb-2">
+                    ¿Te interesa este producto?
+                  </h3>
+                  <p className="text-sm text-muted-foreground mb-6">
+                    Completá el formulario y te contactamos a la brevedad.
+                  </p>
+                  <ConsultationForm
+                    defaultType="producto"
+                    productCode={product.code}
+                    productName={product.name}
+                    variant="compact"
+                  />
                 </div>
               )}
             </div>
