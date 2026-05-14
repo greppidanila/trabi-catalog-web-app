@@ -20,7 +20,7 @@ import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { useCart } from "@/context/cart-context";
 import { useAuth } from "@/context/auth-context";
-import { ConsultationForm } from "@/components/forms/consultation-form";
+
 import { cn } from "@/lib/utils";
 
 type PageProps = {
@@ -353,25 +353,7 @@ export default function ProductPage({ params }: PageProps) {
                 </div>
               </div>
 
-              {/* Consultation Form for Public Users */}
-              {!isLibrero && (
-                <div className="mt-10 rounded-xl border bg-card p-6" id="consulta">
-                  <h3 className="font-serif text-xl tracking-wide text-foreground mb-2">
-                    ¿Te interesa este producto?
-                  </h3>
-                  <p className="text-sm text-muted-foreground mb-6">
-                    Completá el formulario y te contactamos a la brevedad. 
-                    También podés consultar por puntos de venta o sugerencias.
-                  </p>
-                  <ConsultationForm
-                    defaultType="producto"
-                    productCode={product.code}
-                    productName={product.name}
-                    variant="compact"
-                  />
-                </div>
-              )}
-            </div>
+                          </div>
           </div>
 
           {/* Related Products */}
