@@ -14,8 +14,8 @@ export function HeroSection() {
         sizes="100vw"
       />
       
-      {/* Soft Red Overlay - more transparent to show image */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#8b0022]/60 via-[#f20036]/40 to-[#8b0022]/60" />
+      {/* Soft Red Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#8b0022]/55 via-[#f20036]/35 to-[#8b0022]/55" />
       
       {/* Content */}
       <div className="relative z-10 mx-auto max-w-7xl px-4 pt-40 pb-32 text-center sm:px-6 lg:px-8">

@@ -2,9 +2,11 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { Plus } from "lucide-react";
 import { Product, categories } from "@/data/products";
 import { useCart } from "@/context/cart-context";
+import { useAuth } from "@/context/auth-context";
 import { cn } from "@/lib/utils";
 
 type ProductCardProps = {
@@ -14,11 +16,13 @@ type ProductCardProps = {
 
 export function ProductCard({ product, view = "grid" }: ProductCardProps) {
   const [selectedVariant, setSelectedVariant] = useState(product.variants[0]);
+  const [selectedColor, setSelectedColor] = useState(product.colors?.[0] || undefined);
   const { addItem } = useCart();
+  const { isLibrero } = useAuth();
   const categoryInfo = categories.find((c) => c.name === product.category);
 
   const handleAddToCart = () => {
-    addItem(product, selectedVariant);
+    addItem(product, selectedVariant, selectedColor);
   };
 
   if (view === "list") {
@@ -71,13 +75,15 @@ export function ProductCard({ product, view = "grid" }: ProductCardProps) {
               </option>
             ))}
           </select>
-          <button
-            onClick={handleAddToCart}
-            className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-white transition-colors hover:bg-primary/90"
-            aria-label="Agregar al pedido"
-          >
-            <Plus className="h-5 w-5" />
-          </button>
+          {isLibrero && (
+            <button
+              onClick={handleAddToCart}
+              className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-white transition-colors hover:bg-primary/90"
+              aria-label="Agregar al pedido"
+            >
+              <Plus className="h-5 w-5" />
+            </button>
+          )}
         </div>
       </div>
     );
@@ -86,7 +92,7 @@ export function ProductCard({ product, view = "grid" }: ProductCardProps) {
   return (
     <div className="group overflow-hidden rounded-lg border bg-card transition-all hover:shadow-lg">
       {/* Image */}
-      <div className="relative aspect-square overflow-hidden bg-muted">
+      <Link href={`/producto/${product.id}`} className="block relative aspect-square overflow-hidden bg-muted">
         {product.image ? (
           <Image
             src={product.image}
@@ -116,29 +122,42 @@ export function ProductCard({ product, view = "grid" }: ProductCardProps) {
         >
           {product.category}
         </span>
-      </div>
+        {product.isNew && (
+          <span className="absolute right-3 top-3 rounded-full bg-[#f20036] px-2 py-0.5 text-xs font-medium text-white">
+            Nuevo
+          </span>
+        )}
+      </Link>
 
       {/* Content */}
       <div className="p-4">
         <p className="font-mono text-xs text-muted-foreground">{product.code}</p>
-        <h3 className="mt-1 font-semibold leading-tight">{product.name}</h3>
+        <Link href={`/producto/${product.id}`} className="block">
+          <h3 className="mt-1 font-semibold leading-tight hover:text-primary transition-colors">{product.name}</h3>
+        </Link>
         <p className="mt-1 text-sm text-muted-foreground line-clamp-2">
           {product.description}
         </p>
 
-        {/* Color Swatches */}
+        {/* Color Swatches - Clickable */}
         {product.colors && product.colors.length > 0 && (
           <div className="mt-3 flex flex-wrap gap-1.5">
             {product.colors.slice(0, 6).map((color, index) => (
-              <span
+              <button
                 key={index}
-                className="h-4 w-4 rounded-full border border-black/10"
+                onClick={() => setSelectedColor(color)}
+                className={cn(
+                  "h-5 w-5 rounded-full border-2 transition-all",
+                  selectedColor === color 
+                    ? "border-foreground scale-110 ring-2 ring-foreground/20" 
+                    : "border-black/10 hover:scale-110"
+                )}
                 style={{ backgroundColor: color }}
-                aria-label={`Color ${index + 1}`}
+                aria-label={`Seleccionar color ${index + 1}`}
               />
             ))}
             {product.colors.length > 6 && (
-              <span className="flex h-4 items-center text-xs text-muted-foreground">
+              <span className="flex h-5 items-center text-xs text-muted-foreground">
                 +{product.colors.length - 6}
               </span>
             )}
@@ -163,14 +182,16 @@ export function ProductCard({ product, view = "grid" }: ProductCardProps) {
           ))}
         </div>
 
-        {/* Add to Cart */}
-        <button
-          onClick={handleAddToCart}
-          className="mt-4 flex w-full items-center justify-center gap-2 rounded-full bg-primary px-4 py-3 font-semibold text-white transition-colors hover:bg-primary/90"
-        >
-          <Plus className="h-4 w-4" />
-          Agregar al pedido
-        </button>
+        {/* Add to Cart - Only for Libreros */}
+        {isLibrero && (
+          <button
+            onClick={handleAddToCart}
+            className="mt-4 flex w-full items-center justify-center gap-2 rounded-full bg-primary px-4 py-3 font-semibold text-white transition-colors hover:bg-primary/90"
+          >
+            <Plus className="h-4 w-4" />
+            Agregar al pedido
+          </button>
+        )}
       </div>
     </div>
   );

@@ -14,6 +14,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
+import { ConsultationForm } from "@/components/forms/consultation-form";
+import { Store as StoreIcon } from "lucide-react";
 
 // Dynamic import for the map component (client-only)
 const StoreMap = dynamic(
@@ -246,14 +248,61 @@ export function StoresContent() {
                     className="w-full bg-[#25D366] hover:bg-[#128C7E] text-white"
                     onClick={() => handleWhatsAppClick(store)}
                   >
-                    <MessageCircle className="h-4 w-4 mr-2" />
-                    Consultar por WhatsApp
-                  </Button>
-                </div>
+<MessageCircle className="h-4 w-4 mr-2" />
+                Consultar por WhatsApp
+              </Button>
+            </div>
               ))
             )}
           </div>
         )}
+
+        {/* Become a Seller Section */}
+        <div className="mt-16 rounded-2xl bg-gradient-to-br from-primary/5 to-primary/10 border border-primary/20 p-8 sm:p-12">
+          <div className="grid gap-8 lg:grid-cols-2 items-center">
+            <div>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
+                  <StoreIcon className="h-6 w-6 text-primary" />
+                </div>
+                <h2 className="font-serif text-2xl tracking-wide text-foreground sm:text-3xl">
+                  ¿Querés ser punto de venta?
+                </h2>
+              </div>
+              <p className="text-muted-foreground leading-relaxed mb-4">
+                Unite a nuestra red de libreros y distribuidores en todo el país. 
+                Ofrecé a tus clientes productos Trabi de calidad y disfrutá de beneficios exclusivos para mayoristas.
+              </p>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li className="flex items-center gap-2">
+                  <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+                  Acceso a catálogo mayorista completo
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+                  Precios especiales por volumen
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+                  Soporte comercial personalizado
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+                  Material POP y capacitación
+                </li>
+              </ul>
+            </div>
+            <div className="bg-white rounded-xl shadow-sm border p-6">
+              <h3 className="font-semibold text-foreground mb-4">
+                Completá tus datos y te contactamos
+              </h3>
+              <ConsultationForm 
+                defaultType="punto-de-venta"
+                variant="compact"
+              />
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );

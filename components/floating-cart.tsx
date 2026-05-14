@@ -2,19 +2,26 @@
 
 import { ShoppingBag, X, Plus, Minus, MessageCircle } from "lucide-react";
 import { useCart } from "@/context/cart-context";
+import { useAuth } from "@/context/auth-context";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 
 export function FloatingCart() {
   const { items, totalItems, isCartOpen, setIsCartOpen, updateQuantity, removeItem } = useCart();
+  const { isLibrero } = useAuth();
+
+  // Only show cart for libreros (wholesale users)
+  if (!isLibrero) return null;
 
   const generateWhatsAppMessage = () => {
     if (items.length === 0) return "";
     
     const itemsList = items
       .map(
-        (item) =>
-          `• ${item.product.code} ${item.product.name} ${item.variant} (x${item.quantity} unidades)`
+        (item) => {
+          const colorInfo = item.color ? ` - Color: ${item.color}` : "";
+          return `• ${item.product.code} ${item.product.name} ${item.variant}${colorInfo} (x${item.quantity} unidades)`;
+        }
       )
       .join("%0A");
     
@@ -87,7 +94,7 @@ export function FloatingCart() {
             <ul className="space-y-4">
               {items.map((item) => (
                 <li
-                  key={`${item.product.id}-${item.variant}`}
+                  key={`${item.product.id}-${item.variant}-${item.color || 'no-color'}`}
                   className="flex items-start gap-3 rounded-lg border p-3"
                 >
                   <div className="flex-1 min-w-0">
@@ -95,12 +102,21 @@ export function FloatingCart() {
                       {item.product.code}
                     </p>
                     <p className="font-medium truncate">{item.product.name}</p>
-                    <p className="text-sm text-muted-foreground">{item.variant}</p>
+                    <div className="flex items-center gap-2 mt-0.5">
+                      <span className="text-sm text-muted-foreground">{item.variant}</span>
+                      {item.color && (
+                        <span 
+                          className="h-4 w-4 rounded-full border border-black/20 flex-shrink-0"
+                          style={{ backgroundColor: item.color }}
+                          title={`Color: ${item.color}`}
+                        />
+                      )}
+                    </div>
                   </div>
                   <div className="flex items-center gap-2">
                     <button
                       onClick={() =>
-                        updateQuantity(item.product.id, item.variant, item.quantity - 1)
+                        updateQuantity(item.product.id, item.variant, item.quantity - 1, item.color)
                       }
                       className="flex h-8 w-8 items-center justify-center rounded-full border hover:bg-muted transition-colors"
                       aria-label="Reducir cantidad"
@@ -110,7 +126,7 @@ export function FloatingCart() {
                     <span className="w-8 text-center font-medium">{item.quantity}</span>
                     <button
                       onClick={() =>
-                        updateQuantity(item.product.id, item.variant, item.quantity + 1)
+                        updateQuantity(item.product.id, item.variant, item.quantity + 1, item.color)
                       }
                       className="flex h-8 w-8 items-center justify-center rounded-full border hover:bg-muted transition-colors"
                       aria-label="Aumentar cantidad"
@@ -119,7 +135,7 @@ export function FloatingCart() {
                     </button>
                   </div>
                   <button
-                    onClick={() => removeItem(item.product.id, item.variant)}
+                    onClick={() => removeItem(item.product.id, item.variant, item.color)}
                     className="flex h-8 w-8 items-center justify-center rounded-full text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-colors"
                     aria-label="Eliminar producto"
                   >

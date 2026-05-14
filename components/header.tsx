@@ -3,19 +3,22 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Menu, X } from "lucide-react";
+import { Menu, X, User, LogOut, Store } from "lucide-react";
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/context/auth-context";
 
 const navLinks = [
   { href: "/", label: "Inicio" },
   { href: "/catalogo", label: "Catálogo" },
   { href: "/tutoriales", label: "Tutoriales" },
   { href: "/puntos-de-venta", label: "Puntos de Venta" },
+  { href: "/contacto", label: "Contacto" },
 ];
 
 export function Header() {
   const pathname = usePathname();
+  const { user, isLibrero, logout, setShowLoginModal } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [hasScrolled, setHasScrolled] = useState(false);
   const isHomepage = pathname === "/";
@@ -74,6 +77,49 @@ export function Header() {
             >
               Ver Catálogo
             </Link>
+            
+            {/* Auth Section */}
+            {isLibrero ? (
+              <div className="relative group">
+                <button
+                  className={cn(
+                    "flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium transition-colors",
+                    showBackground
+                      ? "border-border text-foreground hover:bg-muted"
+                      : "border-white/30 text-white hover:bg-white/10"
+                  )}
+                >
+                  <Store className="h-4 w-4" />
+                  <span className="max-w-[120px] truncate">{user?.businessName || user?.name}</span>
+                </button>
+                <div className="absolute right-0 top-full mt-2 w-48 rounded-lg border bg-white py-2 shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
+                  <div className="px-3 py-2 border-b">
+                    <p className="text-sm font-medium text-foreground">{user?.name}</p>
+                    <p className="text-xs text-muted-foreground">{user?.email}</p>
+                  </div>
+                  <button
+                    onClick={logout}
+                    className="flex w-full items-center gap-2 px-3 py-2 text-sm text-destructive hover:bg-destructive/10"
+                  >
+                    <LogOut className="h-4 w-4" />
+                    Cerrar sesión
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <button
+                onClick={() => setShowLoginModal(true)}
+                className={cn(
+                  "flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium transition-colors",
+                  showBackground
+                    ? "border-border text-foreground hover:bg-muted"
+                    : "border-white/30 text-white hover:bg-white/10"
+                )}
+              >
+                <User className="h-4 w-4" />
+                Acceso
+              </button>
+            )}
           </nav>
 
           {/* Mobile menu button */}
@@ -118,6 +164,42 @@ export function Header() {
             >
               Ver Catálogo
             </Link>
+            
+            {/* Mobile Auth */}
+            <div className="mt-4 pt-4 border-t">
+              {isLibrero ? (
+                <div className="space-y-2">
+                  <div className="px-3 py-2 rounded-lg bg-muted">
+                    <div className="flex items-center gap-2">
+                      <Store className="h-4 w-4 text-primary" />
+                      <span className="font-medium text-sm">{user?.businessName || user?.name}</span>
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-1">{user?.email}</p>
+                  </div>
+                  <button
+                    onClick={() => {
+                      logout();
+                      setMobileMenuOpen(false);
+                    }}
+                    className="flex w-full items-center justify-center gap-2 rounded-lg border border-destructive/30 px-4 py-2 text-sm font-medium text-destructive"
+                  >
+                    <LogOut className="h-4 w-4" />
+                    Cerrar sesión
+                  </button>
+                </div>
+              ) : (
+                <button
+                  onClick={() => {
+                    setShowLoginModal(true);
+                    setMobileMenuOpen(false);
+                  }}
+                  className="flex w-full items-center justify-center gap-2 rounded-lg border px-4 py-3 text-base font-medium"
+                >
+                  <User className="h-5 w-5" />
+                  Acceso
+                </button>
+              )}
+            </div>
           </div>
         </div>
       )}
