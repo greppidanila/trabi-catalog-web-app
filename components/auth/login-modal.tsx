@@ -56,7 +56,7 @@ export function LoginModal() {
                 <Store className="h-5 w-5 text-primary" />
               </div>
               <div>
-                <h2 className="font-serif text-xl tracking-wide">Acceso Mayorista</h2>
+                <h2 className="font-serif text-xl tracking-wide">Acceso</h2>
                 <p className="text-sm text-muted-foreground">Exclusivo para libreros autorizados</p>
               </div>
             </div>

@@ -7,9 +7,9 @@ import { cn } from "@/lib/utils";
 export type ConsultationType = 
   | "producto"
   | "punto-de-venta"
-  | "pedido-mayorista"
+  | "sumarme-equipo"
   | "sugerencia"
-  | "otro";
+  | "contacto-general";
 
 const consultationTypes: { value: ConsultationType; label: string; description: string }[] = [
   { 
@@ -23,9 +23,9 @@ const consultationTypes: { value: ConsultationType; label: string; description: 
     description: "Solicitar acceso como librero o distribuidor"
   },
   { 
-    value: "pedido-mayorista", 
-    label: "Pedido mayorista",
-    description: "Consulta sobre pedidos al por mayor"
+    value: "sumarme-equipo", 
+    label: "Quiero sumarme al equipo",
+    description: "Trabajar con nosotros"
   },
   { 
     value: "sugerencia", 
@@ -33,9 +33,9 @@ const consultationTypes: { value: ConsultationType; label: string; description: 
     description: "Feedback, ideas o mejoras"
   },
   { 
-    value: "otro", 
-    label: "Otro",
-    description: "Otras consultas"
+    value: "contacto-general", 
+    label: "Contacto general",
+    description: "Otras consultas institucionales"
   },
 ];
 

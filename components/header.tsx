@@ -117,7 +117,7 @@ export function Header() {
                 )}
               >
                 <User className="h-4 w-4" />
-                Acceso Mayorista
+                Acceso
               </button>
             )}
           </nav>
@@ -196,7 +196,7 @@ export function Header() {
                   className="flex w-full items-center justify-center gap-2 rounded-lg border px-4 py-3 text-base font-medium"
                 >
                   <User className="h-5 w-5" />
-                  Acceso Mayorista
+                  Acceso
                 </button>
               )}
             </div>

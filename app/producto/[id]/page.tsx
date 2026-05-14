@@ -102,58 +102,60 @@ export default function ProductPage({ params }: PageProps) {
             <span className="text-foreground truncate max-w-[150px]">{product.name}</span>
           </nav>
 
-          {/* Product Detail */}
-          <div className="grid gap-8 lg:grid-cols-2 lg:gap-16">
-            {/* Image */}
-            <div className="relative aspect-square overflow-hidden rounded-2xl bg-muted">
-              {product.image ? (
-                <Image
-                  src={product.image}
-                  alt={product.name}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                  priority
-                />
-              ) : (
-                <div
-                  className="flex h-full w-full items-center justify-center"
-                  style={{
-                    background: product.colors
-                      ? `linear-gradient(135deg, ${product.colors[0]} 0%, ${product.colors[1] || product.colors[0]} 100%)`
-                      : "#e5e5e5",
-                  }}
-                >
-                  <span className="font-serif text-8xl text-white/80">T</span>
-                </div>
-              )}
-              
-              {/* Badges */}
-              <div className="absolute left-4 top-4 flex flex-col gap-2">
-                <span
-                  className={cn(
-                    "rounded-full px-3 py-1 text-sm font-medium text-white",
-                    categoryInfo?.color || "bg-muted"
+          {/* Product Detail - Desktop: Two columns with sticky image */}
+          <div className="lg:grid lg:grid-cols-2 lg:gap-16 lg:items-start">
+            {/* Image - Sticky on desktop */}
+            <div className="lg:sticky lg:top-32 lg:self-start">
+              <div className="relative aspect-square overflow-hidden rounded-2xl bg-muted">
+                {product.image ? (
+                  <Image
+                    src={product.image}
+                    alt={product.name}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                    priority
+                  />
+                ) : (
+                  <div
+                    className="flex h-full w-full items-center justify-center"
+                    style={{
+                      background: product.colors
+                        ? `linear-gradient(135deg, ${product.colors[0]} 0%, ${product.colors[1] || product.colors[0]} 100%)`
+                        : "#e5e5e5",
+                    }}
+                  >
+                    <span className="font-serif text-8xl text-white/80">T</span>
+                  </div>
+                )}
+                
+                {/* Badges */}
+                <div className="absolute left-4 top-4 flex flex-col gap-2">
+                  <span
+                    className={cn(
+                      "rounded-full px-3 py-1 text-sm font-medium text-white",
+                      categoryInfo?.color || "bg-muted"
+                    )}
+                  >
+                    {product.category}
+                  </span>
+                  {product.isNew && (
+                    <span className="rounded-full bg-[#f20036] px-3 py-1 text-sm font-medium text-white">
+                      Nuevo
+                    </span>
                   )}
-                >
-                  {product.category}
-                </span>
-                {product.isNew && (
-                  <span className="rounded-full bg-[#f20036] px-3 py-1 text-sm font-medium text-white">
-                    Nuevo
-                  </span>
-                )}
-                {product.isEco && (
-                  <span className="rounded-full bg-emerald-600 px-3 py-1 text-sm font-medium text-white flex items-center gap-1">
-                    <Recycle className="h-3 w-3" />
-                    Eco
-                  </span>
-                )}
+                  {product.isEco && (
+                    <span className="rounded-full bg-emerald-600 px-3 py-1 text-sm font-medium text-white flex items-center gap-1">
+                      <Recycle className="h-3 w-3" />
+                      Eco
+                    </span>
+                  )}
+                </div>
               </div>
             </div>
 
-            {/* Info */}
-            <div className="flex flex-col">
+            {/* Info - Scrollable content on right */}
+            <div className="mt-8 lg:mt-0 flex flex-col">
               <p className="font-mono text-sm text-muted-foreground">{product.code}</p>
               <h1 className="mt-2 font-serif text-3xl tracking-wide text-foreground sm:text-4xl">
                 {product.name}
@@ -324,14 +326,42 @@ export default function ProductPage({ params }: PageProps) {
                 </div>
               )}
 
+              {/* Institutional Info Section */}
+              <div className="mt-10 rounded-xl border bg-gradient-to-br from-primary/5 to-transparent p-6">
+                <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
+                  <span className="h-2 w-2 rounded-full bg-primary" />
+                  Sobre Trabi
+                </h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  Todos nuestros productos están desarrollados con los más altos estándares de calidad, 
+                  pensados especialmente para el uso escolar, artístico y profesional. 
+                  Fabricados en Argentina con materiales seguros y no tóxicos.
+                </p>
+                <div className="mt-4 flex flex-wrap gap-4 text-xs text-muted-foreground">
+                  <span className="flex items-center gap-1.5">
+                    <Check className="h-3.5 w-3.5 text-emerald-600" />
+                    No tóxico
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <Check className="h-3.5 w-3.5 text-emerald-600" />
+                    Fabricación argentina
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <Check className="h-3.5 w-3.5 text-emerald-600" />
+                    Calidad certificada
+                  </span>
+                </div>
+              </div>
+
               {/* Consultation Form for Public Users */}
               {!isLibrero && (
-                <div className="mt-10 rounded-xl border bg-card p-6">
+                <div className="mt-10 rounded-xl border bg-card p-6" id="consulta">
                   <h3 className="font-serif text-xl tracking-wide text-foreground mb-2">
                     ¿Te interesa este producto?
                   </h3>
                   <p className="text-sm text-muted-foreground mb-6">
-                    Completá el formulario y te contactamos a la brevedad.
+                    Completá el formulario y te contactamos a la brevedad. 
+                    También podés consultar por puntos de venta o sugerencias.
                   </p>
                   <ConsultationForm
                     defaultType="producto"
