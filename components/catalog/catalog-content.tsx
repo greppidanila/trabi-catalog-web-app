@@ -5,14 +5,9 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { 
   Search, 
   X, 
-  SlidersHorizontal, 
   Grid3X3, 
   List, 
-  Sparkles,
   TrendingUp,
-  Clock,
-  Tag,
-  ChevronRight,
   Filter
 } from "lucide-react";
 import { products, categories, subcategories, Category } from "@/data/products";
@@ -195,58 +190,21 @@ export function CatalogContent() {
     (showRefillable ? 1 : 0);
 
   const FilterSidebar = () => (
-    <div className="space-y-6">
-      {/* Category Filter */}
-      <div>
-        <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
-          <Tag className="h-4 w-4" />
-          Categoria
-        </h3>
-        <div className="space-y-1">
-          <button
-            onClick={() => handleCategoryChange("Todos")}
-            className={cn(
-              "w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors text-left",
-              selectedCategory === "Todos"
-                ? "bg-primary text-white font-medium"
-                : "hover:bg-muted text-muted-foreground"
-            )}
-          >
-            <span className="h-2.5 w-2.5 rounded-full bg-gradient-to-br from-primary to-amber-500" />
-            Todos los productos
-          </button>
-          {categories.map((cat) => (
-            <button
-              key={cat.name}
-              onClick={() => handleCategoryChange(cat.name)}
-              className={cn(
-                "w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors text-left",
-                selectedCategory === cat.name
-                  ? "bg-primary text-white font-medium"
-                  : "hover:bg-muted text-muted-foreground"
-              )}
-            >
-              <span className={cn("h-2.5 w-2.5 rounded-full", cat.color)} />
-              {cat.name}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* Subcategory Filter */}
+    <div className="space-y-4">
+      {/* Subcategory Filter - Only when category selected */}
       {selectedCategory !== "Todos" && availableSubcategories.length > 0 && (
         <div>
-          <h3 className="font-semibold text-foreground mb-3">Subcategoria</h3>
-          <div className="space-y-1 max-h-48 overflow-y-auto pr-2">
+          <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Subcategoria</h3>
+          <div className="space-y-0.5 max-h-40 overflow-y-auto">
             {availableSubcategories.map((sub) => (
-              <label key={sub} className="flex items-start gap-2 cursor-pointer px-1 py-1.5 rounded hover:bg-muted transition-colors">
+              <label key={sub} className="flex items-start gap-2 cursor-pointer px-2 py-1.5 rounded hover:bg-muted transition-colors">
                 <input
                   type="checkbox"
                   checked={selectedSubcategories.includes(sub)}
                   onChange={() => handleSubcategoryToggle(sub)}
-                  className="h-4 w-4 mt-0.5 text-primary border-border rounded focus:ring-primary"
+                  className="h-3.5 w-3.5 mt-0.5 text-primary border-border rounded focus:ring-primary"
                 />
-                <span className="text-sm leading-tight">{sub}</span>
+                <span className="text-xs leading-tight">{sub}</span>
               </label>
             ))}
           </div>
@@ -255,18 +213,15 @@ export function CatalogContent() {
 
       {/* Quick Filters */}
       <div>
-        <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
-          <Sparkles className="h-4 w-4" />
-          Filtros rapidos
-        </h3>
-        <div className="flex flex-wrap gap-2">
+        <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Filtros</h3>
+        <div className="flex flex-wrap gap-1.5">
           <button
             onClick={() => setShowNew(!showNew)}
             className={cn(
-              "px-3 py-1.5 rounded-full text-xs font-medium transition-colors border",
+              "px-2.5 py-1 rounded-full text-xs font-medium transition-colors",
               showNew
-                ? "bg-[#f20036] text-white border-[#f20036]"
-                : "border-border hover:border-[#f20036] hover:text-[#f20036]"
+                ? "bg-[#f20036] text-white"
+                : "bg-muted hover:bg-muted/80"
             )}
           >
             Nuevos
@@ -274,10 +229,10 @@ export function CatalogContent() {
           <button
             onClick={() => setShowFeatured(!showFeatured)}
             className={cn(
-              "px-3 py-1.5 rounded-full text-xs font-medium transition-colors border",
+              "px-2.5 py-1 rounded-full text-xs font-medium transition-colors",
               showFeatured
-                ? "bg-amber-500 text-white border-amber-500"
-                : "border-border hover:border-amber-500 hover:text-amber-600"
+                ? "bg-amber-500 text-white"
+                : "bg-muted hover:bg-muted/80"
             )}
           >
             Destacados
@@ -285,10 +240,10 @@ export function CatalogContent() {
           <button
             onClick={() => setShowEco(!showEco)}
             className={cn(
-              "px-3 py-1.5 rounded-full text-xs font-medium transition-colors border",
+              "px-2.5 py-1 rounded-full text-xs font-medium transition-colors",
               showEco
-                ? "bg-emerald-600 text-white border-emerald-600"
-                : "border-border hover:border-emerald-600 hover:text-emerald-600"
+                ? "bg-emerald-600 text-white"
+                : "bg-muted hover:bg-muted/80"
             )}
           >
             Eco
@@ -296,10 +251,10 @@ export function CatalogContent() {
           <button
             onClick={() => setShowWashable(!showWashable)}
             className={cn(
-              "px-3 py-1.5 rounded-full text-xs font-medium transition-colors border",
+              "px-2.5 py-1 rounded-full text-xs font-medium transition-colors",
               showWashable
-                ? "bg-sky-500 text-white border-sky-500"
-                : "border-border hover:border-sky-500 hover:text-sky-600"
+                ? "bg-sky-500 text-white"
+                : "bg-muted hover:bg-muted/80"
             )}
           >
             Lavables
@@ -307,10 +262,10 @@ export function CatalogContent() {
           <button
             onClick={() => setShowRefillable(!showRefillable)}
             className={cn(
-              "px-3 py-1.5 rounded-full text-xs font-medium transition-colors border",
+              "px-2.5 py-1 rounded-full text-xs font-medium transition-colors",
               showRefillable
-                ? "bg-violet-600 text-white border-violet-600"
-                : "border-border hover:border-violet-600 hover:text-violet-600"
+                ? "bg-violet-600 text-white"
+                : "bg-muted hover:bg-muted/80"
             )}
           >
             Recargables
@@ -320,20 +275,16 @@ export function CatalogContent() {
 
       {/* Sort */}
       <div>
-        <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
-          <TrendingUp className="h-4 w-4" />
-          Ordenar por
-        </h3>
+        <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Ordenar</h3>
         <select
           value={sortBy}
           onChange={(e) => setSortBy(e.target.value as SortOption)}
-          className="w-full rounded-lg border bg-background px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+          className="w-full rounded-lg border bg-background px-2.5 py-2 text-xs focus:outline-none focus:ring-1 focus:ring-primary"
         >
-          <option value="featured">Destacados primero</option>
-          <option value="newest">Mas recientes</option>
-          <option value="oldest">Mas antiguos</option>
-          <option value="name-asc">Nombre A-Z</option>
-          <option value="name-desc">Nombre Z-A</option>
+          <option value="featured">Destacados</option>
+          <option value="newest">Recientes</option>
+          <option value="name-asc">A-Z</option>
+          <option value="name-desc">Z-A</option>
         </select>
       </div>
 
@@ -341,49 +292,44 @@ export function CatalogContent() {
       {activeFiltersCount > 0 && (
         <button
           onClick={clearFilters}
-          className="w-full rounded-lg border-2 border-dashed border-border px-4 py-2.5 text-sm font-medium text-muted-foreground hover:border-primary hover:text-primary transition-colors"
+          className="w-full rounded-lg border border-dashed px-3 py-2 text-xs font-medium text-muted-foreground hover:border-primary hover:text-primary transition-colors"
         >
-          Limpiar {activeFiltersCount} filtro{activeFiltersCount > 1 ? "s" : ""}
+          Limpiar filtros ({activeFiltersCount})
         </button>
       )}
     </div>
   );
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-      {/* Hero Search Section */}
-      <div className="relative mb-8">
-        <div className="text-center mb-6">
-          <h1 className="font-serif text-3xl tracking-wide text-foreground sm:text-4xl lg:text-5xl">
-            Catalogo de Productos
-          </h1>
-          <p className="mt-2 text-muted-foreground">
-            Encuentra el producto ideal para tu creatividad
-          </p>
-        </div>
-
-        {/* Search Bar - Prominent */}
-        <form onSubmit={handleSearchSubmit} className="relative max-w-2xl mx-auto">
+    <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
+      {/* Compact Header with Search */}
+      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-4">
+        <h1 className="font-serif text-2xl tracking-wide text-foreground sm:text-3xl">
+          Catalogo
+        </h1>
+        
+        {/* Search Bar */}
+        <form onSubmit={handleSearchSubmit} className="relative flex-1 max-w-md">
           <div className={cn(
-            "relative rounded-2xl border-2 bg-card shadow-sm transition-all",
-            isSearchFocused ? "border-primary shadow-lg shadow-primary/10" : "border-transparent"
+            "relative rounded-full border bg-card transition-all",
+            isSearchFocused ? "border-primary ring-2 ring-primary/20" : "border-border"
           )}>
-            <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
+            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <input
               ref={searchInputRef}
               type="text"
-              placeholder="Buscar marcadores, lapices, acrylic..."
+              placeholder="Buscar productos..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               onFocus={() => setIsSearchFocused(true)}
               onBlur={() => setTimeout(() => setIsSearchFocused(false), 200)}
-              className="w-full rounded-2xl bg-transparent pl-12 pr-12 py-4 text-base focus:outline-none"
+              className="w-full rounded-full bg-transparent pl-9 pr-9 py-2 text-sm focus:outline-none"
             />
             {searchQuery && (
               <button
                 type="button"
                 onClick={() => setSearchQuery("")}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground p-1 rounded-full hover:bg-muted"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
                 aria-label="Limpiar busqueda"
               >
                 <X className="h-4 w-4" />
@@ -393,12 +339,9 @@ export function CatalogContent() {
 
           {/* Search Suggestions Dropdown */}
           {isSearchFocused && (
-            <div className="absolute top-full left-0 right-0 mt-2 rounded-xl border bg-card shadow-xl z-50 overflow-hidden">
+            <div className="absolute top-full left-0 right-0 mt-1 rounded-lg border bg-card shadow-lg z-50 overflow-hidden">
               {searchQuery.length >= 2 && searchSuggestions.length > 0 ? (
-                <div className="p-2">
-                  <p className="px-3 py-1.5 text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                    Productos sugeridos
-                  </p>
+                <div className="py-1">
                   {searchSuggestions.map((product) => (
                     <button
                       key={product.id}
@@ -407,31 +350,24 @@ export function CatalogContent() {
                         setSearchQuery(product.name);
                         setIsSearchFocused(false);
                       }}
-                      className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-muted transition-colors text-left"
+                      className="w-full flex items-center gap-2 px-3 py-2 hover:bg-muted transition-colors text-left"
                     >
-                      <Search className="h-4 w-4 text-muted-foreground flex-shrink-0" />
-                      <div className="flex-1 min-w-0">
-                        <p className="font-medium text-sm truncate">{product.name}</p>
-                        <p className="text-xs text-muted-foreground truncate">{product.subcategory}</p>
-                      </div>
-                      <ChevronRight className="h-4 w-4 text-muted-foreground" />
+                      <Search className="h-3.5 w-3.5 text-muted-foreground flex-shrink-0" />
+                      <span className="text-sm truncate">{product.name}</span>
                     </button>
                   ))}
                 </div>
               ) : (
-                <div className="p-2">
-                  <p className="px-3 py-1.5 text-xs font-medium text-muted-foreground uppercase tracking-wider flex items-center gap-1.5">
-                    <TrendingUp className="h-3 w-3" />
-                    Busquedas populares
-                  </p>
-                  {popularSearches.map((term) => (
+                <div className="py-1">
+                  <p className="px-3 py-1 text-xs text-muted-foreground">Busquedas populares</p>
+                  {popularSearches.slice(0, 3).map((term) => (
                     <button
                       key={term}
                       type="button"
                       onClick={() => handleSuggestionClick(term)}
-                      className="w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-muted transition-colors text-left"
+                      className="w-full flex items-center gap-2 px-3 py-1.5 hover:bg-muted transition-colors text-left"
                     >
-                      <Clock className="h-4 w-4 text-muted-foreground" />
+                      <TrendingUp className="h-3 w-3 text-muted-foreground" />
                       <span className="text-sm">{term}</span>
                     </button>
                   ))}
@@ -442,16 +378,16 @@ export function CatalogContent() {
         </form>
       </div>
 
-      {/* Category Pills - Horizontal Scroll */}
-      <div className="mb-6 -mx-4 px-4 overflow-x-auto scrollbar-hide">
-        <div className="flex gap-2 pb-2 min-w-max">
+      {/* Category Pills + Results Count - Same Line */}
+      <div className="flex items-center justify-between gap-4 mb-4 pb-3 border-b">
+        <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide flex-1">
           <button
             onClick={() => handleCategoryChange("Todos")}
             className={cn(
-              "px-4 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap",
+              "px-3 py-1.5 rounded-full text-xs font-medium transition-all whitespace-nowrap",
               selectedCategory === "Todos"
-                ? "bg-primary text-white shadow-md"
-                : "bg-card border hover:border-primary hover:text-primary"
+                ? "bg-primary text-white"
+                : "bg-muted hover:bg-muted/80"
             )}
           >
             Todos
@@ -461,21 +397,26 @@ export function CatalogContent() {
               key={cat.name}
               onClick={() => handleCategoryChange(cat.name)}
               className={cn(
-                "px-4 py-2 rounded-full text-sm font-medium transition-all whitespace-nowrap flex items-center gap-2",
+                "px-3 py-1.5 rounded-full text-xs font-medium transition-all whitespace-nowrap",
                 selectedCategory === cat.name
-                  ? "bg-primary text-white shadow-md"
-                  : "bg-card border hover:border-primary hover:text-primary"
+                  ? "bg-primary text-white"
+                  : "bg-muted hover:bg-muted/80"
               )}
             >
-              <span className={cn("h-2 w-2 rounded-full", cat.color)} />
               {cat.name}
             </button>
           ))}
         </div>
+        
+        <div className="flex items-center gap-2 flex-shrink-0">
+          <span className="text-sm text-muted-foreground whitespace-nowrap">
+            {filteredProducts.length} producto{filteredProducts.length !== 1 ? "s" : ""}
+          </span>
+        </div>
       </div>
 
-      {/* Controls Bar */}
-      <div className="flex flex-wrap items-center justify-between gap-3 mb-6 pb-4 border-b">
+      {/* Controls Bar - Compact */}
+      <div className="flex items-center justify-between gap-2 mb-4">
         <div className="flex items-center gap-3">
           {/* Mobile Filter Button */}
           <button
@@ -536,12 +477,7 @@ export function CatalogContent() {
           </div>
         </div>
 
-        <div className="flex items-center gap-3">
-          {/* Results Count */}
-          <span className="text-sm text-muted-foreground hidden sm:block">
-            {filteredProducts.length} producto{filteredProducts.length !== 1 ? "s" : ""}
-          </span>
-
+        <div className="flex items-center gap-2">
           {/* Sort Dropdown - Desktop */}
           <select
             value={sortBy}
@@ -580,10 +516,10 @@ export function CatalogContent() {
       </div>
 
       {/* Main Content */}
-      <div className="flex gap-8">
+      <div className="flex gap-6">
         {/* Desktop Sidebar */}
-        <aside className="hidden lg:block w-64 flex-shrink-0">
-          <div className="sticky top-28 rounded-2xl border bg-card p-5">
+        <aside className="hidden lg:block w-56 flex-shrink-0">
+          <div className="sticky top-24 rounded-xl border bg-card p-4">
             <FilterSidebar />
           </div>
         </aside>
