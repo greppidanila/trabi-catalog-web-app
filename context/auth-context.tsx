@@ -30,7 +30,7 @@ const MOCK_LIBREROS = [
   { 
     id: "1", 
     email: "librero@trabi.com", 
-    password: "trabi2024", 
+    password: "trabi2026", 
     name: "Juan Pérez",
     businessName: "Librería El Sol",
     role: "librero" as UserRole
