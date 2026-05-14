@@ -14,6 +14,7 @@ export type Product = {
   variants: string[];
   colors?: string[];
   image?: string;
+  images?: string[]; // Gallery images
   featured?: boolean;
   // Technical specs
   specs?: {
@@ -117,6 +118,11 @@ export const products: Product[] = [
     variants: ["x6", "x12", "x24"],
     colors: ["#000000", "#f20036", "#3b82f6", "#22c55e", "#f59e0b", "#8b5cf6"],
     image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/imgi_3_banner-img-2-Uqgdtt1p8Wst3TApZM9iLhGgEceGsI.png",
+    images: [
+      "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/imgi_3_banner-img-2-Uqgdtt1p8Wst3TApZM9iLhGgEceGsI.png",
+      "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/imgi_4_banner-img-3-1cYTs8Cji068EKvEGYHjPDYaX5fDiU.png",
+      "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/imgi_9_Big-Brush-ARWGdSCG7r5cdcfIaJa3K2jdnTp6iH.jpg",
+    ],
     featured: true,
     specs: {
       tipType: "Punta pincel flexible",
@@ -158,6 +164,11 @@ export const products: Product[] = [
     variants: ["x6", "x10", "x20"],
     colors: ["#000000", "#f20036", "#3b82f6", "#22c55e", "#f59e0b", "#ec4899"],
     image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/imgi_4_banner-img-3-1cYTs8Cji068EKvEGYHjPDYaX5fDiU.png",
+    images: [
+      "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/imgi_4_banner-img-3-1cYTs8Cji068EKvEGYHjPDYaX5fDiU.png",
+      "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/imgi_9_Big-Brush-ARWGdSCG7r5cdcfIaJa3K2jdnTp6iH.jpg",
+      "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/imgi_3_banner-img-2-Uqgdtt1p8Wst3TApZM9iLhGgEceGsI.png",
+    ],
     featured: true,
     specs: {
       tipType: "Punta pincel grande",
@@ -258,6 +269,11 @@ export const products: Product[] = [
     variants: ["x6", "x12", "x20"],
     colors: ["#000000", "#ffffff", "#f20036", "#3b82f6", "#22c55e", "#f59e0b"],
     image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/imgi_8_Acrylic-7JLvDVbau3nxGDas3hq5LqEf8FTkTr.jpg",
+    images: [
+      "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/imgi_8_Acrylic-7JLvDVbau3nxGDas3hq5LqEf8FTkTr.jpg",
+      "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/imgi_2_banner-img-1-n2I1boc4D2DYrCRGeQ3Ih4s9VOGqzk.png",
+      "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/imgi_5_banner-img-4-mWRMayvSaST44igkdtzBEGJkz5Ch4d.png",
+    ],
     featured: true,
     specs: {
       tipType: "Punta redonda a válvula",

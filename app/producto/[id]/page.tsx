@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { products, categories } from "@/data/products";
 import { ProductCard } from "@/components/product-card";
+import { ProductGallery } from "@/components/product/product-gallery";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { useCart } from "@/context/cart-context";
@@ -104,54 +105,36 @@ export default function ProductPage({ params }: PageProps) {
 
           {/* Product Detail - Desktop: Two columns with sticky image */}
           <div className="lg:grid lg:grid-cols-2 lg:gap-16 lg:items-start">
-            {/* Image - Sticky on desktop */}
+            {/* Image Gallery - Sticky on desktop */}
             <div className="lg:sticky lg:top-32 lg:self-start">
-              <div className="relative aspect-square overflow-hidden rounded-2xl bg-muted">
-                {product.image ? (
-                  <Image
-                    src={product.image}
-                    alt={product.name}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 1024px) 100vw, 50vw"
-                    priority
-                  />
-                ) : (
-                  <div
-                    className="flex h-full w-full items-center justify-center"
-                    style={{
-                      background: product.colors
-                        ? `linear-gradient(135deg, ${product.colors[0]} 0%, ${product.colors[1] || product.colors[0]} 100%)`
-                        : "#e5e5e5",
-                    }}
-                  >
-                    <span className="font-serif text-8xl text-white/80">T</span>
-                  </div>
-                )}
-                
-                {/* Badges */}
-                <div className="absolute left-4 top-4 flex flex-col gap-2">
-                  <span
-                    className={cn(
-                      "rounded-full px-3 py-1 text-sm font-medium text-white",
-                      categoryInfo?.color || "bg-muted"
-                    )}
-                  >
-                    {product.category}
+              {/* Badges positioned above the gallery */}
+              <div className="absolute left-4 top-4 z-10 flex flex-col gap-2">
+                <span
+                  className={cn(
+                    "rounded-full px-3 py-1 text-sm font-medium text-white",
+                    categoryInfo?.color || "bg-muted"
+                  )}
+                >
+                  {product.category}
+                </span>
+                {product.isNew && (
+                  <span className="rounded-full bg-[#f20036] px-3 py-1 text-sm font-medium text-white">
+                    Nuevo
                   </span>
-                  {product.isNew && (
-                    <span className="rounded-full bg-[#f20036] px-3 py-1 text-sm font-medium text-white">
-                      Nuevo
-                    </span>
-                  )}
-                  {product.isEco && (
-                    <span className="rounded-full bg-emerald-600 px-3 py-1 text-sm font-medium text-white flex items-center gap-1">
-                      <Recycle className="h-3 w-3" />
-                      Eco
-                    </span>
-                  )}
-                </div>
+                )}
+                {product.isEco && (
+                  <span className="rounded-full bg-emerald-600 px-3 py-1 text-sm font-medium text-white flex items-center gap-1">
+                    <Recycle className="h-3 w-3" />
+                    Eco
+                  </span>
+                )}
               </div>
+              
+              <ProductGallery
+                images={product.images || (product.image ? [product.image] : [])}
+                productName={product.name}
+                colors={product.colors}
+              />
             </div>
 
             {/* Info - Scrollable content on right */}
